@@ -1,0 +1,94 @@
+<?php
+
+/**
+ * @file
+ * Install and uninstall functions for ucla_tabbed module.
+ */
+
+/**
+ * Implements hook_schema().
+ * Creates ucla_tabbed_log database table.
+ */
+function ucla_tabbed_schema() {
+  $schema['ucla_tabbed_log'] = array(
+    'description' => 'Stores information about searches.',
+    'fields' => array(
+      'search_date' => array(
+        'description' => 'Date & time of the search',
+        'type' => 'int',
+        'not null' => TRUE
+      ),
+      'search_target' => array(
+        'description' => 'Target system being searched',
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE
+      ),
+      'search_terms' => array(
+        'description' => 'Search terms entered by user',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE
+      ),
+      'browser_ip' => array(
+        'description' => 'IP address of user',
+        'type' => 'varchar',
+        'length' => 15,
+        'not null' => TRUE
+      )
+    ),
+    'primary key' => array('search_date', 'browser_ip')
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ * Remove ucla_tabbed_log database tables.
+ */
+function ucla_tabbed_uninstall() {
+  db_drop_table('ucla_tabbed_log');
+}
+
+/**
+ * Update module by adding database table for logging.
+ * Uses hook_update_N so table can be added without requiring
+ * uninstall / reinstall of module, which would require manually
+ * reconfiguring block for display.
+ */
+function ucla_tabbed_update_7100() {
+  // Copy of database table definition from hook_schema implementation
+  $schema['ucla_tabbed_log'] = array(
+    'description' => 'Stores information about searches.',
+    'fields' => array(
+      'search_date' => array(
+        'description' => 'Date & time of the search',
+        'type' => 'int',
+        'not null' => TRUE
+      ),
+      'search_target' => array(
+        'description' => 'Target system being searched',
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE
+      ),
+      'search_terms' => array(
+        'description' => 'Search terms entered by user',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE
+      ),
+      'browser_ip' => array(
+        'description' => 'IP address of user',
+        'type' => 'varchar',
+        'length' => 15,
+        'not null' => TRUE
+      )
+    ),
+    'primary key' => array('search_date', 'browser_ip')
+  );
+
+  db_create_table('ucla_tabbed_log', $schema['ucla_tabbed_log']);
+}
+

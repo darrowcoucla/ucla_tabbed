@@ -1,0 +1,411 @@
+<?php
+/**
+ * @file
+ * Defines custom search form allowing user to choose from multiple search targets.
+ */
+
+/**
+ * Define custom search form
+ */
+function ucla_tabbed_custom_form($form, &$form_state) {
+  $form = array();
+  // #form_id apparently set by default from function name but be explicit
+  $form['#form_id'] = 'ucla_tabbed_custom_form';
+
+  // Select (drop-down) list for user to choose where to search
+  $form['search_target'] = array (
+    '#type' => 'select',
+    '#title' => 'Choose one:',
+    '#title_display' => 'invisible',
+    '#options' => array (
+      'site' => 'Site search',
+      'melvyl' => 'Melvyl',
+      'catalog' => 'Library Catalog',
+      'guides' => 'Research Guides'
+    )
+  );
+
+  $form['search_terms'] = array(
+    '#type' => 'textfield',
+    '#required' => TRUE,
+    '#size' => 26,
+    '#maxlength' => 80,
+    '#default_value' => ''
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'OK',
+    '#id' => 'ucla-search-custom-form-submit',
+  );
+
+  return $form;
+}
+
+/**
+ * Handle the form when submitted
+ * Implements FORM_ID_submit(), mentioned in passing at
+ * http://api.drupal.org/api/drupal/developer!topics!forms_api_reference.html/7#submit_property
+ */
+function ucla_tabbed_custom_form_submit($form, &$form_state) {
+  //dsm($form);
+  //dsm($form_state);
+
+  $search_terms = $form['search_terms']['#value'];
+  $search_target = $form['search_target']['#value'];
+  // If behind varnish, REMOTE_ADDR = IP of the varnish server
+  // and HTTP_X_FORWARDED_FOR = IP of remote user
+  $browser_ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']);
+  $search_date = $_SERVER['REQUEST_TIME'];
+  // $search_date is timestamp; for pretty output, use something like date('Y-m-d H:i:s T', $search_date)
+
+  // Log the search info before doing the search
+  $search_info = array(
+    'search_date' => $search_date,
+    'search_target' => $search_target,
+    'search_terms' => $search_terms,
+    'browser_ip' => $browser_ip
+  );
+  db_insert('ucla_tabbed_log')->fields($search_info)->execute();
+
+  // Format URL for target-specific search and redirect to that URL
+  switch ($search_target) {
+    case "site":
+      // Call the native Drupal site search form
+      $form_state['redirect'] = 'search/node/' . trim($search_terms);
+      break;
+    case "melvyl":
+      $target_url = 'http://ucla.worldcat.org/search?qt=wc_org_ucla&q=';
+      // Replacing space with plus in search is not needed or desired for WorldCat
+      $target_url .= drupal_encode_path($search_terms);
+      // Docs say drupal_goto is for "local" URLs but works fine with absolute off-site URLs too
+      drupal_goto($path = $target_url);
+      break;
+    case "catalog":
+      $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?DB=local&Search_Arg=';
+      $extra_params = '&Search_Code=GKEY^&SL=None&CNT=50&HIST=1';
+      // Need to replace space with plus for library catalog, but do NOT url encode the terms
+      $target_url .= str_replace(' ', '+', $search_terms);
+      // Extra params must be after the search terms in the URL
+      $target_url .= $extra_params;
+      drupal_goto($path = $target_url);
+      break;
+    case "guides":
+      $target_url = 'http://guides.library.ucla.edu/search.php?iid=261&c=0&search=';
+      // Need to replace space with plus for subject guides, but do NOT url encode the terms
+      $target_url .= str_replace(' ', '+', $search_terms);
+      drupal_goto($path = $target_url);
+      break;
+    default:
+      drupal_set_message("WHAT???");
+  }
+}
+
+/**
+ * Implements hook_block_info() to define a new block for the custom form
+ */
+function ucla_tabbed_block_info() {
+  $blocks['ucla_tabbed'] = array(
+    'info' => t('UCLA Custom Search Block'),
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['ucla_tab_search'] = array(
+    'info' => t('UCLA Tabbed Search Block'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view() to add the custom form to the new block
+ */
+function ucla_tabbed_block_view( $delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'ucla_tabbed':
+      $block['title'] = 'UCLA Search';
+      $block['content'] = drupal_render(drupal_get_form('ucla_tabbed_custom_form'));
+      break;
+    case 'ucla_tab_search':
+      $block['title'] = 'UCLA Search';
+      $block['content'] = drupal_get_form('ucla_tab_search_form');
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_menu() 
+ */
+// not needed if using this in a block instead
+/**************************
+function ucla_tabbed_menu() {
+  $items['customsearch/ucla'] = array(
+    'title' => 'UCLA custom search',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ucla_tabbed_custom_form'),
+    'access callback' => TRUE
+  );
+
+  return $items;
+}
+**************************/
+
+/**
+ * Implements hook_views_api()
+ * Actual views integration code is in ucla_tabbed.views.inc
+ */
+function ucla_tabbed_views_api() {
+  return array(
+    'api' => 3
+  );
+}
+
+/**
+ * Form constructor for the tab'ed search.
+ *
+ * Notice a container element is used when we need to use #states form key.
+ * There seems to be a problem in drupal core when trying to use it directly
+ * from inside a vertical tab'ed form.
+ *
+ * @fixme Add extra callback for external POST requests.
+ * @todo Maybe split on several forms, one per tab.
+ */
+function ucla_tab_search_form($form, &$form_state) {
+  $form['tabs'] = array(
+    '#type' => 'vertical_tabs',
+    '#default_tab' => 'edit-books',
+  );
+  $fieldset_default = array(
+    '#type' => 'fieldset',
+    '#group' => 'tabs',
+    '#collapsible' => TRUE,
+    '#tree' => TRUE,
+  );
+  $search_button = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+  );
+  $query_textfield = array(
+    '#type' => 'textfield',
+  );
+
+  // Books & more tab.
+  $form['books'] = array(
+    '#title' => t('Books & more'),
+  ) + $fieldset_default;
+  $form['books']['text_query'] = $query_textfield;
+  $form['books']['text_query']['#attributes'] = array(
+    'placeholder' => t('Find book, journals, selected articles* and more.'),
+  );
+  $form['books']['catalog'] = array(
+    '#type' => 'radios',
+    '#options' => array(
+        'BM-Mel' => t('Melvyl UC Catalog (+selected articles)'),
+        'BM-CAT' => t('UCLA Library Catalog'),
+    ),
+    '#default_value' => 'BM-Mel',
+  );
+  $form['books']['catalog_container_mel'] = array(
+    '#type' => 'container',
+    '#states' => array(
+      'visible' => array(':input[name="books[catalog]"]' => array('value' => 'BM-Mel')),
+    ),
+  );
+  $form['books']['catalog_container_mel']['description'] = array(
+    '#markup' => t('@todo: A description associate d with BM-Mel.'),
+  );
+  $form['books']['catalog_container_cat'] = array(
+    '#type' => 'container',
+    '#states' => array(
+      'visible' => array(':input[name="books[catalog]"]' => array('value' => 'BM-CAT')),
+    ),
+  );
+  $form['books']['catalog_container_cat']['description'] = array(
+    '#markup' => t('@todo: A description associated with BM-CAT.'),
+  );
+  $form['books']['ucla_catalog_search_index'] = array(
+    '#type' => 'select',
+    '#options' => array(
+        'keyword' => t('Keyword'),
+        'title' => t('Title'),
+        'title_startof' => t('Title - start of'),
+        'title_phrase' => t('Title phrase'),
+        'journal_title' => t('Journal title'),
+        'journal_title_startof' => t('Journal title - start of'),
+        'series_title' => t('Series title'),
+        'author_list' => t('Author list'),
+        'author_list_names' => t('Author List (last name, first name)'),
+        'author_and_title_list' => t('Author and title list'),
+        'subject_list' => t('Subject list'),
+        'subject_list_startof' => t('Subject list - start of'),
+        'call_number' => t('Call number'),
+        'isbn' => t('ISBN'),
+        'issn' => t('ISSN'),
+    ),
+    '#states' => array(
+      'visible' => array(':input[name="books[catalog]"]' => array('value' => 'BM-CAT')),
+    ),
+  );
+  $form['books']['books_search'] = $search_button;
+  $form['books']['books_search']['#name'] = 'op_books';
+
+  // Articles tab.
+  $form['articles'] = array(
+    '#title' => t('Articles'),
+  ) + $fieldset_default;
+  $form['articles']['text_query'] = $query_textfield;
+  $form['articles']['text_query']['#attributes'] = array(
+    'placeholder' => t('Quick article search. Search several databases at once.'),
+  );
+  $form['articles']['search_index'] = array(
+    '#type' => 'select',
+    '#options' => array(
+        'title' => t('Title'),
+        'author' => t('Author'),
+        'fulltext' => t('Full text'),
+        'keyword' => t('Keyword'),
+        'subject' => t('Subject'),
+        'abstract' => t('Abstract'),
+        'isbn' => t('ISBN'),
+        'issn' => t('ISSN'),
+    ),
+  );
+  $form['articles']['search_year'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+        'placeholder' => t('Year (yyyy)'),
+    ),
+  );
+  $form['articles']['search_categories'] = array(
+    '#type' => 'checkboxes',
+    '#options' => array(
+      'art' => t('Arts and Humanities'),
+      'bus' => t('Business and economics'),
+      'eng' => t('Engineering and Aplied Sciences'),
+      'gen' => t('General'),
+      'hea' => t('Health and Life Sciences'),
+      'phy' => t('Physical Sciences and Mathematics'),
+      'soc' => t('Social Sciences'),
+    ),
+  );
+  $form['articles']['articles_search'] = $search_button;
+  $form['articles']['articles_search']['#name'] = 'op_articles';
+  $form['articles']['description'] = array(
+    '#markup' => t('@todo: A description associated with articles tab.'),
+  );
+
+  // Databases tab.
+  $form['databases'] = array(
+    '#title' => t('Databases'),
+  ) + $fieldset_default;
+  $form['databases']['databases_search'] = $search_button;
+  $form['databases']['databases_search']['#name'] = 'op_databases';
+
+  // Journals tab.
+  $form['journals'] = array(
+    '#title' => t('Journals'),
+  ) + $fieldset_default;
+  $form['journals']['journals_text_query'] = $query_textfield;
+  $form['journals']['journals_text_query']['#attributes'] = array(
+    'placeholder' => t('search e-journal titles.'),
+  );
+  $form['journals']['journals_catalog'] = array(
+    '#type' => 'radios',
+    '#options' => array(
+        'J-E' => t('SFX for e-journals'),
+        'J-ALL' => t('UCLA Library Catalog for print and e-journals'),
+    ),
+  );
+  $form['journals']['sfx_search_index_container'] = array(
+    '#type' => 'container',
+    '#states' => array(
+      'visible' => array(':input[name="journals[journals_catalog]"]' => array('value' => 'J-ALL')),
+    ),
+  );
+  $form['journals']['sfx_search_index_container']['sfx_search_index'] = array(
+    '#type' => 'radios',
+    '#options' => array(
+        'within' => t('Contains'),
+        'start' => t('Starts with'),
+        'exact' => t('Exact'),
+    ),
+    '#default_value' => 'within',
+  );
+  $form['journals']['ucla_tabbed_index_container'] = array(
+    '#type' => 'container',
+    '#states' => array(
+      'visible' => array(':input[name="journals[journals_catalog]"]' => array('value' => 'J-E')),
+    ),
+  );
+  $form['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'] = array(
+    '#type' => 'radios',
+    '#options' => array(
+        'within' => t('Contains'),
+        'start' => t('Starts with'),
+    ),
+    '#default_value' => 'within',
+  );
+  $form['journals']['journals_search'] = $search_button;
+  $form['journals']['journals_search']['#name'] = 'op_journals';
+
+  // Citation tab.
+  $form['citation'] = array(
+    '#title' => t('Citation Linker'),
+  ) + $fieldset_default;
+  $form['citation']['citation_search'] = $search_button;
+  $form['citation']['citation_search']['#name'] = 'op_citation';
+
+  // Course Reserves tab.
+  $form['course'] = array(
+    '#title' => t('Course Reserves'),
+  ) + $fieldset_default;
+  $form['course']['course_search'] = $search_button;
+  $form['course']['course_search']['#name'] = 'op_course';
+
+  return $form;
+}
+
+/**
+ * Form submission handler for ucla_tab_search_form().
+ *
+ * This is mainly about mapping values preparing them to the othe submit
+ * handler.
+ * Notice form_id is renamed to ucla_form_id in order to avoid collision with
+ * Drupal core forms form_id also provided automatically.
+ */
+function ucla_tab_search_form_submit($form, &$form_state) {
+  $tab_form_id_map = array(
+    'books' => array('BM-CAT' => 'BM-CAT', 'BM-Mel' => 'BM-Mel'),
+    'articles' => 'ART',
+    'journals' => array('J-ALL' => 'J-ALL', 'J-E' => 'J-E'),
+    // Not yet defined:
+    //'citation' => '',
+    //'course' => ''
+  );
+  // Other not in tabs: database:DB, reserves:RES, research guides:RG, Manuscripts and archives:MA
+
+  foreach ($tab_form_id_map as $tab => $maps) {
+    // The submit button name is used to decide where we are.
+    if (empty($form_state['values']["op_$tab"])) {
+      // Not this tab.
+      continue;
+    }
+    if (is_array($maps)) {
+      switch ($tab) {
+        case 'books':
+          $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['books']['catalog']];
+          break;
+        case 'journals':
+          $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['journals']['journals_catalog']];
+          break;
+        default:
+          // Not recognized.
+          break;
+      }
+    }
+    else {
+      $form_state['values']['ucla_form_id'] = $maps;
+    }
+  }
+  // @fixme Define: search_terms search_index search_year search_categories.
+}
