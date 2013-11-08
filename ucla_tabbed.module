@@ -301,7 +301,7 @@ print_r("00000");
   ) + $fieldset_default;
   $form['databases']['databases_search'] = $search_button;
   $form['databases']['databases_search']['#name'] = 'op_databases';
-print_r("00006");
+
   // Journals tab.
   $form['journals'] = array(
     '#title' => t('Journals'),
@@ -355,7 +355,7 @@ print_r("00006");
   ) + $fieldset_default;
   $form['citation']['citation_search'] = $search_button;
   $form['citation']['citation_search']['#name'] = 'op_citation';
-
+print_r("00007");
   // Course Reserves tab.
   $form['course'] = array(
     '#title' => t('Course Reserves'),
