@@ -171,6 +171,7 @@ function ucla_tabbed_views_api() {
  * @todo Maybe split on several forms, one per tab.
  */
 function ucla_tab_search_form($form, &$form_state) {
+print_r("00000");
   $form['tabs'] = array(
     '#type' => 'vertical_tabs',
     '#default_tab' => 'edit-books',
