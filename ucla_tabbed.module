@@ -3,7 +3,7 @@
  * @file
  * Defines custom search form allowing user to choose from multiple search targets.
  */
-krumo("00000");
+print_r("00000");
 /**
  * Define custom search form
  */
