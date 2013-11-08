@@ -184,7 +184,7 @@ print_r("00000");
   );
   $search_button = array(
     '#type' => 'submit',
-    '#value' => t('Searchs'),
+    '#value' => t('Search'),
   );
   $query_textfield = array(
     '#type' => 'textfield',
@@ -196,7 +196,7 @@ print_r("00000");
   ) + $fieldset_default;
   $form['books']['text_query'] = $query_textfield;
   $form['books']['text_query']['#attributes'] = array(
-    'placeholder' => t('Find book, journals, selected articles* and more.'),
+    'placeholder' => t('Find book, journals, selected articles* and more...'),
   );
   $form['books']['catalog'] = array(
     '#type' => 'radios',
