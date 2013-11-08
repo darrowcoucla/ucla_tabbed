@@ -189,7 +189,7 @@ print_r("00000");
   $query_textfield = array(
     '#type' => 'textfield',
   );
-print_r("00004");
+
   // Books & more tab.
   $form['books'] = array(
     '#title' => t('Books & more'),
@@ -198,6 +198,7 @@ print_r("00004");
   $form['books']['text_query']['#attributes'] = array(
     'placeholder' => t('Find book, journals, selected articles* and more.'),
   );
+print_r("00004");
   $form['books']['catalog'] = array(
     '#type' => 'radios',
     '#options' => array(
