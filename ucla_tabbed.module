@@ -378,8 +378,39 @@ print_r("00000");
  * Drupal core forms form_id also provided automatically.
  */
 function ucla_tab_search_form_submit($form, &$form_state) {
+  module_load_include('inc', 'ucla_search', 'includes/ucla_search_logger');
+  module_load_include('inc', 'ucla_search', 'includes/ucla_search_handlers');
+
+  // Collect form info
+  $search_target = 'Melvyl';
+  $search_terms = 'education';
+//  $search_target = $form['search_target']['#value'];
+//  $search_terms = $form['search_terms']['#value'];
+  $search_date = $_SERVER['REQUEST_TIME'];
+  // If behind varnish, REMOTE_ADDR = IP of the varnish server
+  // and HTTP_X_FORWARDED_FOR = IP of remote user
+  $browser_ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']);
+
+  // Put form info into array expected by search logger / handlers
+  $search_info = array (
+    'search_target' => $search_target,
+    'search_terms' => $search_terms,
+    'search_date' => $search_date,
+    'browser_ip' => $browser_ip,
+  );
+
+  // Send search info to router, which will do the actual search
+  ucla_search_route_search($search_info);
 
 drupal_set_message(t('debug message'));
+
+
+
+
+
+
+
+
 
   $tab_form_id_map = array(
     'books' => array('BM-CAT' => 'BM-CAT', 'BM-Mel' => 'BM-Mel'),
