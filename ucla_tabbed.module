@@ -363,6 +363,7 @@ function ucla_tab_search_form($form, &$form_state) {
   $form['course']['course_search']['#name'] = 'op_course';
 
   return $form;
+print_r("00001");
 }
 
 /**
