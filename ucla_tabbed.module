@@ -198,7 +198,6 @@ print_r("00000");
   $form['books']['text_query']['#attributes'] = array(
     'placeholder' => t('Find book, journals, selected articles* and more.'),
   );
-print_r("00004");
   $form['books']['catalog'] = array(
     '#type' => 'radios',
     '#options' => array(
@@ -216,6 +215,7 @@ print_r("00004");
   $form['books']['catalog_container_mel']['description'] = array(
     '#markup' => t('@todo: A description associate d with BM-Mel.'),
   );
+print_r("00005");
   $form['books']['catalog_container_cat'] = array(
     '#type' => 'container',
     '#states' => array(
