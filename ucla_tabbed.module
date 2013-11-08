@@ -377,7 +377,7 @@ function ucla_tab_search_form_submit($form, &$form_state) {
 
 // dhc testing
 
-
+krumo("here");
 
 $search_date = $_SERVER['REQUEST_TIME'];
 $browser_ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']);
