@@ -171,6 +171,7 @@ function ucla_tabbed_views_api() {
  * @todo Maybe split on several forms, one per tab.
  */
 function ucla_tab_search_form($form, &$form_state) {
+print_r("00000");
   $form['tabs'] = array(
     '#type' => 'vertical_tabs',
     '#default_tab' => 'edit-books',
@@ -374,10 +375,6 @@ function ucla_tab_search_form($form, &$form_state) {
  * Drupal core forms form_id also provided automatically.
  */
 function ucla_tab_search_form_submit($form, &$form_state) {
-
-print_r("00000");
-
-
   $tab_form_id_map = array(
     'books' => array('BM-CAT' => 'BM-CAT', 'BM-Mel' => 'BM-Mel'),
     'articles' => 'ART',
