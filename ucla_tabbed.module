@@ -377,6 +377,29 @@ function ucla_tab_search_form_submit($form, &$form_state) {
 
 // dhc testing
 
+
+
+$search_date = $_SERVER['REQUEST_TIME'];
+$browser_ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']);
+// Put form info into array expected by search logger / handlers
+  $search_info = array (
+    'search_target' => 'Melvyl',
+    'search_terms' => 'education',
+    'search_date' => $search_date,
+    'browser_ip' => $browser_ip,
+  );
+
+  // Log the search info before doing the search
+//  ucla_search_log_search($search_info); 
+
+  // Send search info to router, which will do the actual search
+  ucla_search_route_search($search_info);
+
+
+
+
+
+
   $tab_form_id_map = array(
     'books' => array('BM-CAT' => 'BM-CAT', 'BM-Mel' => 'BM-Mel'),
     'articles' => 'ART',
