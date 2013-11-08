@@ -184,7 +184,7 @@ print_r("00000");
   );
   $search_button = array(
     '#type' => 'submit',
-    '#value' => t('Search'),
+    '#value' => t('Searchs'),
   );
   $query_textfield = array(
     '#type' => 'textfield',
