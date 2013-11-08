@@ -376,7 +376,7 @@ function ucla_tab_search_form($form, &$form_state) {
 function ucla_tab_search_form_submit($form, &$form_state) {
 
 
-krumo("111111");
+krumo();
 
 
   $tab_form_id_map = array(
