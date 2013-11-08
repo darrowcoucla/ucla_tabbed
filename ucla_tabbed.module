@@ -377,7 +377,7 @@ print_r("00001");
  * Notice form_id is renamed to ucla_form_id in order to avoid collision with
  * Drupal core forms form_id also provided automatically.
  */
-function ucla_tab_search_form_submit($form, &$form_state) {
+function aaaucla_tab_search_form_submit($form, &$form_state) {
 print_r("00002");
   $tab_form_id_map = array(
     'books' => array('BM-CAT' => 'BM-CAT', 'BM-Mel' => 'BM-Mel'),
