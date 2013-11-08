@@ -8,6 +8,8 @@
  * Define custom search form
  */
 function ucla_tabbed_custom_form($form, &$form_state) {
+
+krumo("1111111");
   $form = array();
   // #form_id apparently set by default from function name but be explicit
   $form['#form_id'] = 'ucla_tabbed_custom_form';
