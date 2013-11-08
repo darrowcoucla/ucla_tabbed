@@ -170,7 +170,6 @@ function ucla_tabbed_views_api() {
  * @fixme Add extra callback for external POST requests.
  * @todo Maybe split on several forms, one per tab.
  */
-print_r("00000");
 function ucla_tab_search_form($form, &$form_state) {
   $form['tabs'] = array(
     '#type' => 'vertical_tabs',
@@ -375,6 +374,7 @@ function ucla_tab_search_form($form, &$form_state) {
  * Drupal core forms form_id also provided automatically.
  */
 function ucla_tab_search_form_submit($form, &$form_state) {
+print_r("00000");
   $tab_form_id_map = array(
     'books' => array('BM-CAT' => 'BM-CAT', 'BM-Mel' => 'BM-Mel'),
     'articles' => 'ART',
