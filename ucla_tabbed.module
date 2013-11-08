@@ -382,7 +382,7 @@ function ucla_tab_search_form_submit($form, &$form_state) {
   module_load_include('inc', 'ucla_search', 'includes/ucla_search_handlers');
 
   // Collect form info
-  $search_target = 'Melvyl';
+  $search_target = 'melvyl';
   $search_terms = 'education';
 //  $search_target = $form['search_target']['#value'];
 //  $search_terms = $form['search_terms']['#value'];
