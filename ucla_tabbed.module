@@ -374,6 +374,9 @@ function ucla_tab_search_form($form, &$form_state) {
  * Drupal core forms form_id also provided automatically.
  */
 function ucla_tab_search_form_submit($form, &$form_state) {
+
+// dhc testing
+
   $tab_form_id_map = array(
     'books' => array('BM-CAT' => 'BM-CAT', 'BM-Mel' => 'BM-Mel'),
     'articles' => 'ART',
