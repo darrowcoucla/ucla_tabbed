@@ -215,7 +215,6 @@ print_r("00000");
   $form['books']['catalog_container_mel']['description'] = array(
     '#markup' => t('@todo: A description associate d with BM-Mel.'),
   );
-print_r("00005");
   $form['books']['catalog_container_cat'] = array(
     '#type' => 'container',
     '#states' => array(
@@ -302,7 +301,7 @@ print_r("00005");
   ) + $fieldset_default;
   $form['databases']['databases_search'] = $search_button;
   $form['databases']['databases_search']['#name'] = 'op_databases';
-
+print_r("00006");
   // Journals tab.
   $form['journals'] = array(
     '#title' => t('Journals'),
