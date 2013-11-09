@@ -469,7 +469,7 @@ drupal_set_message(t('debug message'));
 
 
 
-drupal_set_message(t('debug message1'.$maps));
+drupal_set_message(t('debug message1'.$form_state['values']['ucla_form_id']));
 
 
   // @fixme Define: search_terms search_index search_year search_categories.
