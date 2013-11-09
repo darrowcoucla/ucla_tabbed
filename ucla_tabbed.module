@@ -454,7 +454,7 @@ drupal_set_message(t('debug message'));
         case 'books':
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['books']['catalog']];
 
-drupal_set_message(t('debug message1'.$maps[$form_state['values']['books']['catalog']]));
+drupal_set_message(t('debug message1'.$maps[$form_state['values']['books']['text_query']]));
 
           break;
         case 'journals':
