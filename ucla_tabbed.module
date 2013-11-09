@@ -469,7 +469,7 @@ drupal_set_message(t('debug message'));
 
 
 
-drupal_set_message(t('debug message1'));
+drupal_set_message(t('debug message1'.$maps));
 
 
   // @fixme Define: search_terms search_index search_year search_categories.
