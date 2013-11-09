@@ -171,7 +171,9 @@ function ucla_tabbed_views_api() {
  * @todo Maybe split on several forms, one per tab.
  */
 function ucla_tab_search_form($form, &$form_state) {
+
 print_r("00000");
+
   $form['tabs'] = array(
     '#type' => 'vertical_tabs',
     '#default_tab' => 'edit-books',
@@ -191,13 +193,18 @@ print_r("00000");
   );
 
   // Books & more tab.
+  // Books & more tab.
+  // Books & more tab.
   $form['books'] = array(
     '#title' => t('Books & more'),
   ) + $fieldset_default;
+
   $form['books']['text_query'] = $query_textfield;
+
   $form['books']['text_query']['#attributes'] = array(
     'placeholder' => t('Find book, journals, selected articles* and more.'),
   );
+
   $form['books']['catalog'] = array(
     '#type' => 'radios',
     '#options' => array(
@@ -206,24 +213,31 @@ print_r("00000");
     ),
     '#default_value' => 'BM-Mel',
   );
+
+
+
   $form['books']['catalog_container_mel'] = array(
     '#type' => 'container',
     '#states' => array(
       'visible' => array(':input[name="books[catalog]"]' => array('value' => 'BM-Mel')),
     ),
   );
+
   $form['books']['catalog_container_mel']['description'] = array(
     '#markup' => t('@todo: A description associate d with BM-Mel.'),
   );
+
   $form['books']['catalog_container_cat'] = array(
     '#type' => 'container',
     '#states' => array(
       'visible' => array(':input[name="books[catalog]"]' => array('value' => 'BM-CAT')),
     ),
   );
+
   $form['books']['catalog_container_cat']['description'] = array(
     '#markup' => t('@todo: A description associated with BM-CAT.'),
   );
+
   $form['books']['ucla_catalog_search_index'] = array(
     '#type' => 'select',
     '#options' => array(
@@ -247,9 +261,13 @@ print_r("00000");
       'visible' => array(':input[name="books[catalog]"]' => array('value' => 'BM-CAT')),
     ),
   );
+
   $form['books']['books_search'] = $search_button;
+
   $form['books']['books_search']['#name'] = 'op_books';
 
+  // Articles tab.
+  // Articles tab.
   // Articles tab.
   $form['articles'] = array(
     '#title' => t('Articles'),
@@ -378,9 +396,12 @@ print_r("00000");
  * Drupal core forms form_id also provided automatically.
  */
 function ucla_tab_search_form_submit($form, &$form_state) {
+
+
+/*
+//test
   module_load_include('inc', 'ucla_search', 'includes/ucla_search_logger');
   module_load_include('inc', 'ucla_search', 'includes/ucla_search_handlers');
-
   // Collect form info
   $search_target = 'melvyl';
   $search_terms = 'education';
@@ -403,8 +424,8 @@ function ucla_tab_search_form_submit($form, &$form_state) {
   ucla_search_route_search($search_info);
 
 drupal_set_message(t('debug message'));
-
-
+//test
+*/
 
 
 
@@ -445,5 +466,11 @@ drupal_set_message(t('debug message'));
       $form_state['values']['ucla_form_id'] = $maps;
     }
   }
+
+
+
+drupal_set_message(t('debug message1'));
+
+
   // @fixme Define: search_terms search_index search_year search_categories.
 }
