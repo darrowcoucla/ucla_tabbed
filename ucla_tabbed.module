@@ -454,11 +454,14 @@ drupal_set_message(t('debug message'));
         case 'books':
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['books']['catalog']];
 
-drupal_set_message(t('debug message1 '.$form_state['values']['books']['text_query']));
+drupal_set_message(t('debug message BOOKS '.$form_state['values']['books']['text_query']));
 
           break;
         case 'journals':
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['journals']['journals_catalog']];
+
+drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
+
           break;
         default:
           // Not recognized.
