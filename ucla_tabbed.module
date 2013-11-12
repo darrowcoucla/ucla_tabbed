@@ -467,9 +467,6 @@ drupal_set_message(t('debug message'));
 
 //  ucla_search_route_search($search_info);n
 
-  $tab_form_id_map = array(
-    'books' => array('BM-CAT' => 'BM-CAT', 'BM-Mel' => 'BM-Mel'),
-
 drupal_set_message(t('debug message BOOKS '.$tab_form_id_map[books][BM-CAT]));
 drupal_set_message(t('debug message BOOKS '.$form_state['values']['books']['text_query']));
 drupal_set_message(t('debug message BOOKS '.$form_state['values']["op_$tab"]));
