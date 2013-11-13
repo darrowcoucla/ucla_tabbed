@@ -241,7 +241,7 @@ print_r("00000");
   $form['books']['ucla_catalog_search_index'] = array(
     '#type' => 'select',
     '#options' => array(
-        'keyword' => t('Keyword'),
+        'GKEY^' => t('Keyword'),
         'title' => t('Title'),
         'title_startof' => t('Title - start of'),
         'title_phrase' => t('Title phrase'),
@@ -466,7 +466,7 @@ drupal_set_message(t('debug message tab '.$tab));
 
 
 
-drupal_set_message('valval'.$form_state['values']['books']['ucla_catalog_search_index']);
+drupal_set_message('search_index '.$form_state['values']['books']['ucla_catalog_search_index']);
 
 
 
