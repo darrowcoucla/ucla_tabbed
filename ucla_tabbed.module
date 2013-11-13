@@ -241,7 +241,7 @@ print_r("00000");
   $form['books']['ucla_catalog_search_index'] = array(
     '#type' => 'select',
     '#options' => array(
-        'keyword' => t('Keyword'),
+        'keywordq' => t('Keyword'),
         'title' => t('Title'),
         'title_startof' => t('Title - start of'),
         'title_phrase' => t('Title phrase'),
