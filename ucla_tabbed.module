@@ -466,7 +466,7 @@ drupal_set_message(t('debug message tab '.$tab));
 
 
 
-// print_r('valval'.'$form_state['values']['books']['ucla_catalog_search_index']');
+print_r('valval'.'$form_state['values']['books']['ucla_catalog_search_index']');
 
 
 
@@ -528,4 +528,4 @@ drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']
   // @fixme Define: search_terms search_index search_year search_categories.
 }
 
-http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?DB=local&Search_Arg=ucla&Search_Code=GKEY^&SL=None&CNT=50&HIST=1
+// http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?DB=local&Search_Arg=ucla&Search_Code=GKEY^&SL=None&CNT=50&HIST=1
