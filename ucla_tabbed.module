@@ -455,6 +455,9 @@ drupal_set_message(t('debug message tab_form_id_map '.$tab_form_id_map['books'][
       // Not this tab.
       continue;
     }
+
+drupal_set_message(t('debug message tab '.$tab));
+
     if (is_array($maps)) {
       switch ($tab) {
         case 'books':
