@@ -463,6 +463,28 @@ drupal_set_message(t('debug message tab '.$tab));
         case 'books':
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['books']['catalog']];
 
+
+
+
+print_r('valval'.'$form_state['values']['books']['ucla_catalog_search_index']');
+
+
+
+//  foreach ($tab_form_id_map as $tab => $maps) {
+//    // The submit button name is used to decide where we are.
+//    if (empty($form_state['values']["op_$tab"])) {
+//      // Not this tab.
+//      continue;
+//    }
+
+
+
+// dhc===> if ['books']['ucla_catalog_search_index'] exists or if UCLA Library Catalog radio button is selected, build catalog search url
+// if( $form_state['values']['ucla_form_id'] ){}
+
+
+
+
 drupal_set_message(t('debug message map '.$maps[$form_state['values']['books']['catalog']]));
 
 
@@ -505,3 +527,5 @@ drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']
 
   // @fixme Define: search_terms search_index search_year search_categories.
 }
+
+http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?DB=local&Search_Arg=ucla&Search_Code=GKEY^&SL=None&CNT=50&HIST=1
