@@ -463,6 +463,8 @@ drupal_set_message(t('debug message tab '.$tab));
         case 'books':
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['books']['catalog']];
 
+drupal_set_message(t('debug message map '.$maps[$form_state['values']['books']['catalog']]));
+
 
   // Put form info into array expected by search logger / handlers
   $search_info = array (
