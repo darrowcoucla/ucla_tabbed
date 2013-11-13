@@ -255,7 +255,7 @@ print_r("00000");
         'subject_list_startof' => t('Subject list - start of'),
         'call_number' => t('Call number'),
         'isbn' => t('ISBN'),
-        'issn' => t('ISSN'),
+        'issna' => t('ISSN'),
     ),
     '#states' => array(
       'visible' => array(':input[name="books[catalog]"]' => array('value' => 'BM-CAT')),
