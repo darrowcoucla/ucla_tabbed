@@ -466,7 +466,7 @@ drupal_set_message(t('debug message tab '.$tab));
 
 
 
-print_r('valval'.'$form_state['values']['books']['ucla_catalog_search_index']');
+// print_r('valval'.'$form_state['values']['books']['ucla_catalog_search_index']');
 
 
 
