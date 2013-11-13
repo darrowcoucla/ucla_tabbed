@@ -241,7 +241,7 @@ print_r("00000");
   $form['books']['ucla_catalog_search_index'] = array(
     '#type' => 'select',
     '#options' => array(
-        'keyworda' => t('Keyword'),
+        'keyword' => t('Keyword'),
         'title' => t('Title'),
         'title_startof' => t('Title - start of'),
         'title_phrase' => t('Title phrase'),
@@ -255,7 +255,7 @@ print_r("00000");
         'subject_list_startof' => t('Subject list - start of'),
         'call_number' => t('Call number'),
         'isbn' => t('ISBN'),
-        'issna' => t('ISSN'),
+        'issn' => t('ISSN'),
     ),
     '#states' => array(
       'visible' => array(':input[name="books[catalog]"]' => array('value' => 'BM-CAT')),
