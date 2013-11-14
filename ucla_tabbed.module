@@ -242,20 +242,20 @@ print_r("00000");
     '#type' => 'select',
     '#options' => array(
         'GKEY^' => t('Keyword'),
-        'title' => t('Title'),
-        'title_startof' => t('Title - start of'),
-        'title_phrase' => t('Title phrase'),
-        'journal_title' => t('Journal title'),
-        'journal_title_startof' => t('Journal title - start of'),
-        'series_title' => t('Series title'),
-        'author_list' => t('Author list'),
-        'author_list_names' => t('Author List (last name, first name)'),
-        'author_and_title_list' => t('Author and title list'),
-        'subject_list' => t('Subject list'),
-        'subject_list_startof' => t('Subject list - start of'),
-        'call_number' => t('Call number'),
-        'isbn' => t('ISBN'),
-        'issn' => t('ISSN'),
+        'TKEY^' => t('Title'),
+        'TAL2' => t('Title - start of'),
+        'TKEY' => t('Title phrase'),
+        'JKEY^' => t('Journal title'),
+        'JAL2' => t('Journal title - start of'),
+        'SEKW' => t('Series title'),
+        'NAME@' => t('Author list'),
+        'NAME+' => t('Author List (last name, first name)'),
+        'AUTH@' => t('Author and title list'),
+        'SUBJ@' => t('Subject list'),
+        'SUBJ+' => t('Subject list - start of'),
+        'CALL+' => t('Call number'),
+        'ISBN' => t('ISBN'),
+        'ISSN' => t('ISSN'),
     ),
     '#states' => array(
       'visible' => array(':input[name="books[catalog]"]' => array('value' => 'BM-CAT')),
@@ -483,6 +483,21 @@ drupal_set_message(t('debug message tab '.$tab));
 		);
 		break;
       }
+
+
+
+
+
+
+
+// dhc: expand here
+
+
+
+
+
+
+
 
 
 		// dhc: move down more???
