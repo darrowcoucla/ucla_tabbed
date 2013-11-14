@@ -445,7 +445,7 @@ drupal_set_message(t('debug message'));
   );
   // Other not in tabs: database:DB, reserves:RES, research guides:RG, Manuscripts and archives:MA
 
-drupal_set_message(t('debug message tab_form_id_map '.$tab_form_id_map['books']['BM-CAT']));
+// drupal_set_message(t('debug message tab_form_id_map '.$tab_form_id_map['books']['BM-CAT']));
 
 
 
@@ -461,6 +461,7 @@ drupal_set_message(t('debug message tab '.$tab));
     if (is_array($maps)) {
       switch ($tab) {
         case 'books':
+drupal_set_message(t('debug message tab_form_id_map '.$tab_form_id_map['books']['BM-MEL']));
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['books']['catalog']];
 
 	    switch ( $maps[$form_state['values']['books']['catalog']] ) {
