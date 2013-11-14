@@ -428,8 +428,8 @@ drupal_set_message(t('debug message'));
 */
 
 
-  module_load_include('inc', 'ucla_search', 'includes/ucla_search_logger');
-  module_load_include('inc', 'ucla_search', 'includes/ucla_search_handlers');
+  module_load_include('inc', 'ucla_tabbed', 'includes/ucla_search_logger');
+  module_load_include('inc', 'ucla_tabbed', 'includes/ucla_search_handlers');
   $search_date = $_SERVER['REQUEST_TIME'];
   $browser_ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']);
 
