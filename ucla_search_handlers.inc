@@ -41,7 +41,14 @@ function ucla_search_route_search($search_info) {
 
 function ucla_search_catalog($search_info) {
   $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?DB=local&Search_Arg=';
-  $extra_params = '&Search_Code=GKEY^&SL=None&CNT=50&HIST=1';
+
+  $extra_params = '&Search_Code=';
+  if ($search_info['search_code']) { 
+    $extra_params .= $search_info['search_code'];
+  } else {
+    $extra_params .= 'GKEY^';
+  }
+  $extra_params = '&SL=None&CNT=50&HIST=1';
   // Replace space with plus, but do NOT url encode the terms
   $target_url .= str_replace(' ', '+', $search_info['search_terms']);
   // Extra params must be after the search terms in the URL
