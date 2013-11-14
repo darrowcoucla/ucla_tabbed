@@ -42,6 +42,8 @@ function ucla_search_route_search($search_info) {
 function ucla_search_catalog($search_info) {
   $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?DB=local&Search_Arg=';
 
+drupal_set_message('search_index '. $search_info['search_code']);
+
   $extra_params = '&Search_Code=';
   if ($search_info['search_code']) { 
     $extra_params .= $search_info['search_code'];
