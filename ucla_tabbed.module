@@ -461,9 +461,7 @@ drupal_set_message(t('debug message tab '.$tab));
     if (is_array($maps)) {
       switch ($tab) {
         case 'books':
-drupal_set_message(t('debug message tab_form_id_map '.$tab_form_id_map['books']['BM-MEL']));
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['books']['catalog']];
-
 	    switch ( $maps[$form_state['values']['books']['catalog']] ) {
 	      case 'BM-Mel':
 		// Put form info into array expected by search logger / handlers
@@ -484,7 +482,7 @@ drupal_set_message(t('debug message tab_form_id_map '.$tab_form_id_map['books'][
 		'browser_ip' => $browser_ip,
 		);
 		break;
-
+      }
 
 
 		// dhc: move down more???
@@ -501,7 +499,7 @@ drupal_set_message(t('debug message tab_form_id_map '.$tab_form_id_map['books'][
 
 
 
-}
+
 
 
 drupal_set_message('search_index '.$form_state['values']['books']['ucla_catalog_search_index']);
