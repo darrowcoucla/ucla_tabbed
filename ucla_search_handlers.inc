@@ -55,7 +55,8 @@ drupal_set_message('search_index '. $search_info['search_code']);
   $target_url .= str_replace(' ', '+', $search_info['search_terms']);
   // Extra params must be after the search terms in the URL
   $target_url .= $extra_params;
-  drupal_goto($path = $target_url);
+//  drupal_goto($path = $target_url);
+break;
 }
 
 function ucla_search_database($search_info) {
