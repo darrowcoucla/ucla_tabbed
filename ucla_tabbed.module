@@ -465,7 +465,6 @@ drupal_set_message(t('debug message tab '.$tab));
 
 	    switch ( $maps[$form_state['values']['books']['catalog']] ) {
 	      case 'BM-Mel':
-
 		// Put form info into array expected by search logger / handlers
 		$search_info = array (
 		'search_target' => 'melvyl',
@@ -473,17 +472,29 @@ drupal_set_message(t('debug message tab '.$tab));
 		'search_date' => $search_date,
 		'browser_ip' => $browser_ip,
 		);
+		break;
+	      case 'BM-CAT':
+		// Put form info into array expected by search logger / handlers
+		$search_info = array (
+		'search_target' => 'catalog',
+		'search_terms' => $form_state['values']['books']['text_query'],
+		'search_code' => $form_state['values']['books']['ucla_catalog_search_index'],
+		'search_date' => $search_date,
+		'browser_ip' => $browser_ip,
+		);
+		break;
 
+
+
+		// dhc: move down more???
 		// Log the search info before doing the search
 //		ucla_search_log_search($search_info); 
 
 		// Send search info to router, which will do the actual search
 		ucla_search_route_search($search_info);
-		break;
 
-	      case 'BM-CAT':
 
-		break;
+
 
 
 
