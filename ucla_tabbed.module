@@ -453,7 +453,7 @@ drupal_set_message(t('debug message'));
       continue;
     }
 
-drupal_set_message(t('debug message tab '.$tab));
+drupal_set_message(t('debug message tab0 '.$tab));
 
     if (is_array($maps)) {
       switch ($tab) {
