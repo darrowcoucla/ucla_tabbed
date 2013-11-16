@@ -487,6 +487,7 @@ drupal_set_message(t('debug message tab '.$tab));
 		ucla_search_route_search($search_info);
           break;
         case 'articles':
+drupal_set_message(t('debug message tab2 '.$tab));
 	// Put form info into array expected by search logger / handlers
 	$search_info = array (
 	'search_target' => 'articles',
