@@ -458,6 +458,7 @@ drupal_set_message(t('debug message tab '.$tab));
     if (is_array($maps)) {
       switch ($tab) {
         case 'books':
+drupal_set_message(t('debug message tab books: '.$tab));
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['books']['catalog']];
 	    switch ( $maps[$form_state['values']['books']['catalog']] ) {
 	      case 'BM-Mel':
@@ -487,7 +488,7 @@ drupal_set_message(t('debug message tab '.$tab));
 		ucla_search_route_search($search_info);
           break;
         case 'articles':
-drupal_set_message(t('debug message tab2 '.$tab));
+drupal_set_message(t('debug message tab articles: '.$tab));
 	// Put form info into array expected by search logger / handlers
 	$search_info = array (
 	'search_target' => 'articles',
@@ -503,6 +504,7 @@ drupal_set_message(t('debug message tab2 '.$tab));
 
           break;
         case 'journals':
+drupal_set_message(t('debug message tab journals: '.$tab));
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['journals']['journals_catalog']];
 
 //drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
@@ -510,6 +512,7 @@ drupal_set_message(t('debug message tab2 '.$tab));
           break;
         default:
           // Not recognized.
+drupal_set_message(t('debug message tab none: '.$tab));
           break;
       }
     }
