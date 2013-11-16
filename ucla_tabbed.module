@@ -438,7 +438,7 @@ drupal_set_message(t('debug message'));
 
   $tab_form_id_map = array(
     'books' => array('BM-CAT' => 'BM-CAT', 'BM-Mel' => 'BM-Mel'),
-    'articles' => 'ART',
+    'articles' => 'array('ART' => 'ART', 'article' => 'article'),
     'journals' => array('J-ALL' => 'J-ALL', 'J-E' => 'J-E'),
     // Not yet defined:
     //'citation' => '',
