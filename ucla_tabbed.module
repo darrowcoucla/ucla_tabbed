@@ -499,7 +499,7 @@ drupal_set_message(t('search_categories: '.$form_state['values']['articles']['se
 	'search_date' => $search_date,
 	'browser_ip' => $browser_ip,
 	);
-	ucla_search_route_search($search_info);
+//	ucla_search_route_search($search_info);
 	break;
 
 //drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
