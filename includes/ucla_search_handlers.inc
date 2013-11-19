@@ -86,9 +86,6 @@ function serial_solutions_360($search_info) {
 
 
 
-
-
-
 function ucla_search_database($search_info) {
 /*****
   // 2013-08-30 akohler: having trouble getting POST to work, but
