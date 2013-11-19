@@ -489,6 +489,7 @@ drupal_set_message(t('debug message tab books: '.$tab));
           break;
         case 'articles':
 drupal_set_message(t('debug message tab articles: '.$tab));
+drupal_set_message(t('search_categories: '.$form_state['values']['articles']['search_categories']));
 	// Put form info into array expected by search logger / handlers
 	$search_info = array (
 	'search_target' => 'articles',
