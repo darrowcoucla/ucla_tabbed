@@ -494,6 +494,7 @@ drupal_set_message(t('debug message tab articles: '.$tab));
 	'search_target' => 'articles',
 	'search_terms' => $form_state['values']['articles']['text_query'],
 	'search_code' => $form_state['values']['articles']['search_index'],
+	'search_categories' => $form_state['values']['articles']['search_categories'],
 	'search_date' => $search_date,
 	'browser_ip' => $browser_ip,
 	);
