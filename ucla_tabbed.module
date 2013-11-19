@@ -299,13 +299,13 @@ print_r("00000");
   $form['articles']['search_categories'] = array(
     '#type' => 'checkboxes',
     '#options' => array(
-      'art' => t('Arts and Humanities'),
-      'bus' => t('Business and economics'),
-      'eng' => t('Engineering and Aplied Sciences'),
-      'gen' => t('General'),
-      'hea' => t('Health and Life Sciences'),
-      'phy' => t('Physical Sciences and Mathematics'),
-      'soc' => t('Social Sciences'),
+      '103267' => t('Arts and Humanities'),
+      '103349' => t('Business and economics'),
+      '103269' => t('Engineering and Aplied Sciences'),
+      '103266' => t('General'),
+      '103378' => t('Health and Life Sciences'),
+      '103270' => t('Physical Sciences and Mathematics'),
+      '103268' => t('Social Sciences'),
     ),
   );
   $form['articles']['articles_search'] = $search_button;
