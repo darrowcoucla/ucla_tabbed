@@ -76,16 +76,43 @@ function serial_solutions_360($search_info) {
   $target_url = 'http://mb5hp5vz2c.cs.serialssolutions.com/results';
   $extra_params = '?SS_LibHash=MB5HP5VZ2C&locale=en-us&action=start&dbIDList=&term=';
   $extra_params .= str_replace(' ', '+', $search_info['search_terms']);
-  $extra_params .= '&field0=keyword&boolop1=and&term1=&field1=keyword&boolop2=and&term2=&field2=keyword&boolop4=And&term4=&field4=date&catID=';
-  $extra_params .= str_replace(' ', '+', $search_info['search_categories']);
+  $extra_params .= '&field0=';
+  $extra_params .= $search_info['search_code'];
+  $extra_params .= '&boolop1=and&term1=&field1=keyword&boolop2=and&term2=&field2=keyword&boolop4=And&term4=&field4=';
+  $extra_params .= $search_info['search_year'];
+  $extra_params .= str_replace(' ', '&catID=', $search_info['search_categories']);
   $target_url .= $extra_params;
   drupal_goto($path = $target_url);
 }
 
 
+/*
+Location: http://mb5hp5vz2c.cs.serialssolutions.com/results?SS_LibHash=MB5HP5VZ2C&locale=en-us&action=start&dbIDList=&term=were&field0=titlekeyword&boolop1=and&term1=&field1=keyword&boolop2=and&term2=&field2=keyword&boolop4=And&term4=&field4=date&catID=103266
+*/
+
+/*
+SS_LibHash=MB5HP5VZ2C
+&locale=en-us
+&action=start
+&dbIDList=
+&term=were
+&field0=abstract
+&boolop1=and
+&term1=
+&field1=keyword
+&boolop2=and
+&term2=
+&field2=keyword
+&boolop4=And
+&term4=
+&field4=date
+&catID=103266
+*/
 
 
-
+/*
+http://unitproj.library.ucla.edu/search/databases-title-result.cfm?keyword=university&method=contains
+*/
 
 function ucla_search_database($search_info) {
 /*****

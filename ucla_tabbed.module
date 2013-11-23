@@ -172,7 +172,7 @@ function ucla_tabbed_views_api() {
  */
 function ucla_tab_search_form($form, &$form_state) {
 
-print_r("00000");
+krumo("bnbn0");
 
   $form['tabs'] = array(
     '#type' => 'vertical_tabs',
@@ -314,12 +314,48 @@ print_r("00000");
     '#markup' => t('@todo: A description associated with articles tab.'),
   );
 
-  // Databases tab.
+
+
+
+
+
+  // Database's tab.
   $form['databases'] = array(
     '#title' => t('Databases'),
   ) + $fieldset_default;
+  $form['databases']['text_query'] = $query_textfield;
+  $form['databases']['text_query']['#attributes'] = array(
+    'placeholder' => t('search for a database title'),
+  );
+  $form['databases']['sfx_search_index_container'] = array(
+    '#type' => 'container',
+    '#states' => array(
+      'visible' => array(':input[name="databases[databases_catalog]"]' => array('value' => 'ONE')),
+    ),
+  );
+  $form['databases']['ucla_tabbed_index_container'] = array(
+    '#type' => 'container',
+    '#states' => array(
+      'visible' => array(':input[name="databases[databases_catalog]"]' => array('value' => 'TWO')),
+    ),
+  );
+  $form['databases']['method'] = array(
+    '#type' => 'radios',
+    '#options' => array(
+        'within' => t('Contains'),
+        'starts' => t('Starts with'),
+    ),
+    '#default_value' => 'within',
+  );
   $form['databases']['databases_search'] = $search_button;
   $form['databases']['databases_search']['#name'] = 'op_databases';
+
+
+
+
+
+
+
 
   // Journals tab.
   $form['journals'] = array(
@@ -368,6 +404,10 @@ print_r("00000");
   $form['journals']['journals_search'] = $search_button;
   $form['journals']['journals_search']['#name'] = 'op_journals';
 
+
+
+
+
   // Citation tab.
   $form['citation'] = array(
     '#title' => t('Citation Linker'),
@@ -397,6 +437,8 @@ print_r("00000");
  * Drupal core forms form_id also provided automatically.
  */
 function ucla_tab_search_form_submit($form, &$form_state) {
+
+drupal_set_message(t('debug message tab0000 '));
 
 
 /*
@@ -440,6 +482,7 @@ drupal_set_message(t('debug message'));
     'books' => array('BM-CAT' => 'BM-CAT', 'BM-Mel' => 'BM-Mel'),
     'articles' => array('ART' => 'ART', 'article' => 'article'),
     'journals' => array('J-ALL' => 'J-ALL', 'J-E' => 'J-E'),
+    'databases' => array('within' => 'within', 'starts' => 'starts'),
     // Not yet defined:
     //'citation' => '',
     //'course' => ''
@@ -485,17 +528,32 @@ drupal_set_message(t('debug message tab books: '.$tab));
 		// Log the search info before doing the search
 //		ucla_search_log_search($search_info); 
 		// Send search info to router, which will do the actual search
-		ucla_search_route_search($search_info);
+//		ucla_search_route_search($search_info);
           break;
         case 'articles':
-drupal_set_message(t('debug message tab articles: '.$tab));
-drupal_set_message(t('search_categories: '.$form_state['values']['articles']['search_categories']));
+	$search_categories_codes = '';
+	foreach ($form_state['values']['articles']['search_categories'] as $search_categories_code) {
+	  if( $search_categories_code > 0 ){
+	    $search_categories_codes .= ' '.$search_categories_code;
+	    }
+	  }
+
+	  if( $form_state['values']['articles']['search_year'] > 0 ){
+	    $search_year = $form_state['values']['articles']['search_year'];
+	  } else {
+	    $search_year = 'date';
+	  }
+
+
+
+
 	// Put form info into array expected by search logger / handlers
 	$search_info = array (
 	'search_target' => 'articles',
 	'search_terms' => $form_state['values']['articles']['text_query'],
 	'search_code' => $form_state['values']['articles']['search_index'],
-	'search_categories' => $form_state['values']['articles']['search_categories'],
+	'search_year' => $search_year,
+	'search_categories' => $search_categories_codes,
 	'search_date' => $search_date,
 	'browser_ip' => $browser_ip,
 	);
@@ -505,6 +563,77 @@ drupal_set_message(t('search_categories: '.$form_state['values']['articles']['se
 //drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
 
           break;
+
+
+
+
+
+
+
+
+
+        case 'databases':
+drupal_set_message(t('debug message tab databases: '.$form_state['values']['databases']['text_query']));
+	$search_categories_codes = '';
+	foreach ($form_state['values']['articles']['search_categories'] as $search_categories_code) {
+	  if( $search_categories_code > 0 ){
+	    $search_categories_codes .= ' '.$search_categories_code;
+	    }
+	  }
+
+	  if( $form_state['values']['articles']['search_year'] > 0 ){
+	    $search_year = $form_state['values']['articles']['search_year'];
+	  } else {
+	    $search_year = 'date';
+	  }
+
+	    switch ( $maps[$form_state['values']['databases']['method']] ) {
+	      case 'within':
+		// Put form info into array expected by search logger / handlers
+		$search_info = array (
+		'search_target' => 'database',
+		'search_type' => 'contains',
+		'search_terms' => $form_state['values']['databases']['text_query'],
+		'search_date' => $search_date,
+		'browser_ip' => $browser_ip,
+		);
+		break;
+	      case 'starts':
+		// Put form info into array expected by search logger / handlers
+		$search_info = array (
+		'search_target' => 'database',
+		'search_type' => 'starts',
+		'search_terms' => $form_state['values']['databases']['text_query'],
+		'search_date' => $search_date,
+		'browser_ip' => $browser_ip,
+		);
+		break;
+	      }
+
+
+	ucla_search_route_search($search_info);
+	break;
+
+//drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
+
+          break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         case 'journals':
 drupal_set_message(t('debug message tab journals: '.$tab));
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['journals']['journals_catalog']];
@@ -519,6 +648,7 @@ drupal_set_message(t('debug message tab none: '.$tab));
       }
     }
     else {
+drupal_set_message(t('debug message tab no maps: '.$tab));
       $form_state['values']['ucla_form_id'] = $maps;
     }
   }
@@ -532,3 +662,23 @@ drupal_set_message(t('debug message tab none: '.$tab));
 }
 
 // http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?DB=local&Search_Arg=ucla&Search_Code=GKEY^&SL=None&CNT=50&HIST=1
+// Location: http://mb5hp5vz2c.cs.serialssolutions.com/results?SS_LibHash=MB5HP5VZ2C&locale=en-us&action=start&dbIDList=&term=help&field0=keyword&boolop1=and&term1=&field1=keyword&boolop2=and&term2=&field2=keyword&boolop4=And&term4=&field4=date&catID=103266&catID=103378
+
+/*
+SS_LibHash=MB5HP5VZ2C
+&locale=en-us
+&action=start
+&dbIDList=
+&term=were
+&field0=abstract
+&boolop1=and
+&term1=
+&field1=keyword
+&boolop2=and
+&term2=
+&field2=keyword
+&boolop4=And
+&term4=
+&field4=date
+&catID=103266
+*/
