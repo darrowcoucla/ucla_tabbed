@@ -361,11 +361,11 @@ krumo("bnbn0");
   $form['journals'] = array(
     '#title' => t('Journals'),
   ) + $fieldset_default;
-  $form['journals']['journals_text_query'] = $query_textfield;
-  $form['journals']['journals_text_query']['#attributes'] = array(
+  $form['journals']['text_query'] = $query_textfield;
+  $form['journals']['text_query']['#attributes'] = array(
     'placeholder' => t('search e-journal titles.'),
   );
-  $form['journals']['journals_catalog'] = array(
+  $form['journals']['catalog'] = array(
     '#type' => 'radios',
     '#options' => array(
         'J-E' => t('SFX for e-journals'),
@@ -375,31 +375,31 @@ krumo("bnbn0");
   $form['journals']['sfx_search_index_container'] = array(
     '#type' => 'container',
     '#states' => array(
-      'visible' => array(':input[name="journals[journals_catalog]"]' => array('value' => 'J-ALL')),
+      'visible' => array(':input[name="journals[catalog]"]' => array('value' => 'J-E')),
     ),
   );
   $form['journals']['sfx_search_index_container']['sfx_search_index'] = array(
     '#type' => 'radios',
     '#options' => array(
-        'within' => t('Contains'),
-        'start' => t('Starts with'),
-        'exact' => t('Exact'),
+        'within' => t('Contains0'),
+        'start' => t('Starts with0'),
+        'exact' => t('Exact0'),
     ),
     '#default_value' => 'within',
   );
   $form['journals']['ucla_tabbed_index_container'] = array(
     '#type' => 'container',
     '#states' => array(
-      'visible' => array(':input[name="journals[journals_catalog]"]' => array('value' => 'J-E')),
+      'visible' => array(':input[name="journals[catalog]"]' => array('value' => 'J-ALL')),
     ),
   );
   $form['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'] = array(
     '#type' => 'radios',
     '#options' => array(
-        'within' => t('Contains'),
-        'start' => t('Starts with'),
+        'JKEY' => t('Contains1'),
+        'JAL2' => t('Starts with1'),
     ),
-    '#default_value' => 'within',
+    '#default_value' => 'JKEY',
   );
   $form['journals']['journals_search'] = $search_button;
   $form['journals']['journals_search']['#name'] = 'op_journals';
@@ -564,14 +564,6 @@ drupal_set_message(t('debug message tab books: '.$tab));
 
           break;
 
-
-
-
-
-
-
-
-
         case 'databases':
 drupal_set_message(t('debug message tab databases: '.$form_state['values']['databases']['text_query']));
 	$search_categories_codes = '';
@@ -622,12 +614,48 @@ drupal_set_message(t('debug message tab databases: '.$form_state['values']['data
 
 
 
+        case 'journals_dev':
+drupal_set_message(t('debug message tab journals: '.$tab));
+          $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['journals']['catalog']];
+	    switch ( $maps[$form_state['values']['journals']['catalog']] ) {
+	      case 'J-ALL':
+
+  foreach ( $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'] as $tab => $type_choice ) {
+    // The submit button name is used to decide where we are.
+    if (empty( $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index']['$tab'] )) {
+      // Not this tab.
+      continue;
+    }
+}
 
 
 
 
-
-
+		// Put form info into array expected by search logger / handlers
+		$search_info = array (
+		'search_target' => 'melvyl',
+		'search_terms' => $form_state['values']['books']['text_query'],
+		'search_date' => $search_date,
+		'browser_ip' => $browser_ip,
+		);
+		break;
+	      case 'J-E':
+		// Put form info into array expected by search logger / handlers
+		$search_info = array (
+		'search_target' => 'catalog',
+		'search_terms' => $form_state['values']['books']['text_query'],
+		'search_code' => $form_state['values']['books']['ucla_catalog_search_index'],
+		'search_date' => $search_date,
+		'browser_ip' => $browser_ip,
+		);
+		break;
+      }
+		// dhc: move down more???
+		// Log the search info before doing the search
+//		ucla_search_log_search($search_info); 
+		// Send search info to router, which will do the actual search
+//		ucla_search_route_search($search_info);
+          break;
 
 
 
@@ -636,11 +664,63 @@ drupal_set_message(t('debug message tab databases: '.$form_state['values']['data
 
         case 'journals':
 drupal_set_message(t('debug message tab journals: '.$tab));
-          $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['journals']['journals_catalog']];
+drupal_set_message(t('debug message tab journals catalog: '.$maps[$form_state['values']['journals']['catalog']]));
+drupal_set_message(t('debug message tab journals catalog: '.$form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index']));
+          $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['journals']['catalog']];
+	    switch ( $maps[$form_state['values']['journals']['catalog']] ) {
+	      case 'J-ALL':
+		$search_info = array (
+		  'search_target' => 'catalog',
+		  'search_terms' => $form_state['values']['journals']['text_query'],
+		  'search_code' => $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'],
+		  'search_date' => $search_date,
+		  'browser_ip' => $browser_ip,
+		  );
+	      break;
+
+
+
+/* dhc: make this work for the sfx search on handler include: ucla_search_sfx next page
+http://ucelinks.cdlib.org:8888/sfx_ucla/az/default?param_perform_value=searchTitle&param_jumpToPage_value=&param_type_value=textSearch&param_chinese_checkbox_active=1&param_pattern_value=science&param_chinese_checkbox_value=0&param_textSearchType_value=startsWith
+*/
+	      case 'J-E':
+		$search_info = array (
+		  'search_target' => 'catalog',
+		  'search_terms' => $form_state['values']['journals']['text_query'],
+		  'search_code' => $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'],
+		  'search_date' => $search_date,
+		  'browser_ip' => $browser_ip,
+		  );
+	      break;
+
+
+
+}
+
 
 //drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
 
+	ucla_search_route_search($search_info);
+
           break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         default:
           // Not recognized.
 drupal_set_message(t('debug message tab none: '.$tab));
