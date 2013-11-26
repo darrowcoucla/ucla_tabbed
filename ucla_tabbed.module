@@ -382,7 +382,7 @@ krumo("bnbn0");
     '#type' => 'radios',
     '#options' => array(
         'within' => t('Contains0'),
-        'start' => t('Starts with0'),
+        'starts' => t('Starts with0'),
         'exact' => t('Exact0'),
     ),
     '#default_value' => 'within',
@@ -663,9 +663,6 @@ drupal_set_message(t('debug message tab journals: '.$tab));
 
 
         case 'journals':
-drupal_set_message(t('debug message tab journals: '.$tab));
-drupal_set_message(t('debug message tab journals catalog: '.$maps[$form_state['values']['journals']['catalog']]));
-drupal_set_message(t('debug message tab journals catalog: '.$form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index']));
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['journals']['catalog']];
 	    switch ( $maps[$form_state['values']['journals']['catalog']] ) {
 	      case 'J-ALL':
@@ -677,49 +674,21 @@ drupal_set_message(t('debug message tab journals catalog: '.$form_state['values'
 		  'browser_ip' => $browser_ip,
 		  );
 	      break;
-
-
-
-/* dhc: make this work for the sfx search on handler include: ucla_search_sfx next page
-http://ucelinks.cdlib.org:8888/sfx_ucla/az/default?param_perform_value=searchTitle&param_jumpToPage_value=&param_type_value=textSearch&param_chinese_checkbox_active=1&param_pattern_value=science&param_chinese_checkbox_value=0&param_textSearchType_value=startsWith
-*/
 	      case 'J-E':
 		$search_info = array (
-		  'search_target' => 'catalog',
+		  'search_target' => 'sfx',
 		  'search_terms' => $form_state['values']['journals']['text_query'],
-		  'search_code' => $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'],
+		  'search_type' => $form_state['values']['journals']['sfx_search_index_container']['sfx_search_index'],
 		  'search_date' => $search_date,
 		  'browser_ip' => $browser_ip,
 		  );
 	      break;
-
-
-
-}
-
-
+	    }
 //drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
 
 	ucla_search_route_search($search_info);
 
           break;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         default:
           // Not recognized.
