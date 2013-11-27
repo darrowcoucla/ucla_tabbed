@@ -314,11 +314,8 @@ krumo("bnbn0");
     '#markup' => t('@todo: A description associated with articles tab.'),
   );
 
-
-
-
-
-
+  // Database's tab.
+  // Database's tab.
   // Database's tab.
   $form['databases'] = array(
     '#title' => t('Databases'),
@@ -350,13 +347,8 @@ krumo("bnbn0");
   $form['databases']['databases_search'] = $search_button;
   $form['databases']['databases_search']['#name'] = 'op_databases';
 
-
-
-
-
-
-
-
+  // Journals tab.
+  // Journals tab.
   // Journals tab.
   $form['journals'] = array(
     '#title' => t('Journals'),
@@ -408,6 +400,40 @@ krumo("bnbn0");
 
 
 
+
+
+
+
+
+  // Guides's tab.
+  // Guides's tab.
+  // Guides's tab.
+  $form['guides'] = array(
+    '#title' => t('Research Guides'),
+  ) + $fieldset_default;
+  $form['guides']['text_query'] = $query_textfield;
+  $form['guides']['text_query']['#attributes'] = array(
+    'placeholder' => t('search for a database title'),
+  );
+  $form['guides']['guides_search'] = $search_button;
+  $form['guides']['guides_search']['#name'] = 'op_guides';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
   // Citation tab.
   $form['citation'] = array(
     '#title' => t('Citation Linker'),
@@ -421,7 +447,7 @@ krumo("bnbn0");
   ) + $fieldset_default;
   $form['course']['course_search'] = $search_button;
   $form['course']['course_search']['#name'] = 'op_course';
-
+*/
 
 
   return $form;
@@ -483,6 +509,7 @@ drupal_set_message(t('debug message'));
     'articles' => array('ART' => 'ART', 'article' => 'article'),
     'journals' => array('J-ALL' => 'J-ALL', 'J-E' => 'J-E'),
     'databases' => array('within' => 'within', 'starts' => 'starts'),
+    'guides' => array('within' => 'within', 'starts' => 'starts'),
     // Not yet defined:
     //'citation' => '',
     //'course' => ''
@@ -689,6 +716,43 @@ drupal_set_message(t('debug message tab journals: '.$tab));
 	ucla_search_route_search($search_info);
 
           break;
+
+
+
+
+
+
+
+
+
+
+
+
+        case 'guides':
+drupal_set_message(t('debug message tab guides: '.$form_state['values']['guides']['text_query']));
+		// Put form info into array expected by search logger / handlers
+		$search_info = array (
+		'search_target' => 'guides',
+		'search_terms' => $form_state['values']['guides']['text_query'],
+		'search_date' => $search_date,
+		'browser_ip' => $browser_ip,
+		);
+	ucla_search_route_search($search_info);
+	break;
+
+//drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
+
+          break;
+
+
+
+
+
+
+
+
+
+
 
         default:
           // Not recognized.
