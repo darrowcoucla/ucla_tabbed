@@ -730,6 +730,13 @@ drupal_set_message(t('debug message tab journals: '.$tab));
 
         case 'guides':
 drupal_set_message(t('debug message tab guides: '.$form_state['values']['guides']['text_query']));
+
+
+ $ch = curl_init();
+
+
+
+
 		// Put form info into array expected by search logger / handlers
 		$search_info = array (
 		'search_target' => 'guides',
@@ -737,7 +744,7 @@ drupal_set_message(t('debug message tab guides: '.$form_state['values']['guides'
 		'search_date' => $search_date,
 		'browser_ip' => $browser_ip,
 		);
-	ucla_search_route_search($search_info);
+//	ucla_search_route_search($search_info);
 	break;
 
 //drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
