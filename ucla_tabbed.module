@@ -192,10 +192,14 @@ curl_setopt($ch, CURLOPT_HEADER, 1);
 $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 $header = substr($response, 0, $header_size);
 $body = substr($response, $header_size);
-$my_seq_resp = preg_match('/SEQ=\d\d\d\d\d\d\d\d\d\d\d\d\d\d/', $body, $my_seq0);
-$my_seq_resp = preg_match('/\d\d\d\d\d\d\d\d\d\d\d\d\d\d/', $my_seq0[0], $my_seq1);
 $my_pid_resp = preg_match('/cgi-bin\/Pwebrecon\.cgi\?PAGE=rbSearch&SEQ=\d+&PID=.+\">Course Reserves/', $body, $my_pid0);
 $my_pid_resp = preg_match('/.+[^">Course Reserves]/', $my_pid0[0], $my_pid1);
+$my_pid_resp = preg_match('/PID=.+/', $my_pid1[0], $my_pid2);
+$my_pid_resp = preg_match('/[^PID=].+/', $my_pid2[0], $my_pid3);
+$my_seq_resp = preg_match('/SEQ=\d\d\d\d\d\d\d\d\d\d\d\d\d\d/', $body, $my_seq0);
+$my_seq_resp = preg_match('/\d\d\d\d\d\d\d\d\d\d\d\d\d\d/', $my_seq0[0], $my_seq1);
+$search_pid = $my_pid3[0];
+$search_seq = $my_seq1[0];
 curl_close ($ch);
 
 $ch = curl_init();
@@ -693,7 +697,7 @@ drupal_set_message(t('debug message tab books: '.$tab));
 		// Log the search info before doing the search
 //		ucla_search_log_search($search_info); 
 		// Send search info to router, which will do the actual search
-//		ucla_search_route_search($search_info);
+		ucla_search_route_search($search_info);
           break;
         case 'articles':
 	$search_categories_codes = '';
@@ -722,7 +726,7 @@ drupal_set_message(t('debug message tab books: '.$tab));
 	'search_date' => $search_date,
 	'browser_ip' => $browser_ip,
 	);
-//	ucla_search_route_search($search_info);
+	ucla_search_route_search($search_info);
 	break;
 
 //drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
@@ -887,21 +891,10 @@ drupal_set_message(t('debug message tab guides: '.$form_state['values']['guides'
 
 
         case 'reserves':
+
+drupal_set_message(t('debug message tab reserves: '.$form_state['values']['reserves']['ucla_reserves_inst_index']));
+
 	$search_categories_codes = '';
-	foreach ($form_state['values']['reserves']['search_categories'] as $search_categories_code) {
-	  if( $search_categories_code > 0 ){
-	    $search_categories_codes .= ' '.$search_categories_code;
-	    }
-	  }
-
-	  if( $form_state['values']['reserves']['search_year'] > 0 ){
-	    $search_year = $form_state['values']['reserves']['search_year'];
-	  } else {
-	    $search_year = 'date';
-	  }
-
-
-
 
 	// Put form info into array expected by search logger / handlers
 	$search_info = array (
@@ -909,10 +902,8 @@ drupal_set_message(t('debug message tab guides: '.$form_state['values']['guides'
 	'search_inst' => $form_state['values']['reserves']['ucla_reserves_inst_index'],
 	'search_dept' => $form_state['values']['reserves']['ucla_reserves_dept_index'],
 	'search_crse' => $form_state['values']['reserves']['ucla_reserves_crse_index'],
-	'search_pid' => $form_state['values']['reserves']['text_query'],
-	'search_seq' => $form_state['values']['reserves']['search_index'],
-	'search_year' => $search_year,
-	'search_categories' => $search_categories_codes,
+	'search_pid' => $my_pid,
+	'search_seq' => $my_seq,
 	'search_date' => $search_date,
 	'browser_ip' => $browser_ip,
 	);

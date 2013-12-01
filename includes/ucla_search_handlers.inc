@@ -9,7 +9,7 @@
  */
 function ucla_search_route_search($search_info) {
   // Docs say drupal_goto is for "local" URLs but works fine with absolute off-site URLs too
-  // ... is there a better choice?  Maybe drupal_http_request for GET/POST consistency?
+  // ... is there a better choice? Maybe drupal_http_request for GET/POST consistency?
 
   switch ($search_info['search_target']) {
     case "catalog":
@@ -145,10 +145,10 @@ http://unitproj.library.ucla.edu/search/databases-title-result.cfm?keyword=unive
 function ucla_search_database($search_info) {
 /*****
   // 2013-08-30 akohler: having trouble getting POST to work, but
-  //   keeping this code as a sample in case other forms require POST.
+  // keeping this code as a sample in case other forms require POST.
   $target_url = 'http://unitdev.library.ucla.edu/search/databases-title-result-AK.cfm';
   // This currently requires an HTTP POST, so can't use drupal_goto which is GET only
-  $headers = array('Content-Type' => 'application/x-www-form-urlencoded');    // required for POST
+  $headers = array('Content-Type' => 'application/x-www-form-urlencoded'); // required for POST
   $data = array(
     'FORM.keyword' => $search_info['search_terms'],
     'FORM.method' => 'contains', // contains or starts // TEMP TEST
@@ -161,7 +161,7 @@ function ucla_search_database($search_info) {
   $target_url = 'http://unitproj.library.ucla.edu/search/databases-title-result.cfm';
   // Replace space with plus, but do NOT url encode the terms
   $target_url .= '?keyword=' . str_replace(' ', '+', $search_info['search_terms']);
-  if ($search_info['search_type']) { 
+  if ($search_info['search_type']) {
     $target_url .= '&method=' . map_database_search_type($search_info['search_type']);
   }
   drupal_goto($path = $target_url);
@@ -195,7 +195,7 @@ function ucla_search_sfx($search_info) {
   $target_url .= $extra_params;
   // Replace space with plus, but do NOT url encode the terms
   $target_url .= '&param_pattern_value=' . str_replace(' ', '+', $search_info['search_terms']);
-  if ($search_info['search_type']) { 
+  if ($search_info['search_type']) {
     $target_url .= '&param_textSearchType_value=' . map_sfx_search_type($search_info['search_type']);
   }
   drupal_goto($path = $target_url);
@@ -209,7 +209,7 @@ function ucla_search_site($search_info) {
 // Utility functions
 
 function map_database_search_type($ucla_value) {
-  // ucla form value => databases required value 
+  // ucla form value => databases required value
   $mappings = array (
     'within' => 'contains',
     'starts' => 'starts',
@@ -218,7 +218,7 @@ function map_database_search_type($ucla_value) {
 }
 
 function map_sfx_search_type($ucla_value) {
-  // ucla form value => sfx required value 
+  // ucla form value => sfx required value
   $mappings = array (
     'within' => 'contains',
     'exact' => 'exactMatch',
@@ -226,4 +226,3 @@ function map_sfx_search_type($ucla_value) {
   );
   return $mappings[$ucla_value];
 }
-
