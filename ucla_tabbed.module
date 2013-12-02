@@ -640,7 +640,6 @@ drupal_set_message(t('debug message tab0 '.$tab));
     if (is_array($maps)) {
       switch ($tab) {
         case 'books':
-drupal_set_message(t('debug message tab books: '.$tab));
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['books']['catalog']];
 	    switch ( $maps[$form_state['values']['books']['catalog']] ) {
 	      case 'BM-Mel':
@@ -662,111 +661,81 @@ drupal_set_message(t('debug message tab books: '.$tab));
 		'browser_ip' => $browser_ip,
 		);
 		break;
-      }
-		// dhc: move down more???
-		// Log the search info before doing the search
-//		ucla_search_log_search($search_info); 
-		// Send search info to router, which will do the actual search
-		ucla_search_route_search($search_info);
-          break;
-        case 'articles':
-	$search_categories_codes = '';
-	foreach ($form_state['values']['articles']['search_categories'] as $search_categories_code) {
-	  if( $search_categories_code > 0 ){
-	    $search_categories_codes .= ' '.$search_categories_code;
 	    }
-	  }
-
-	  if( $form_state['values']['articles']['search_year'] > 0 ){
-	    $search_year = $form_state['values']['articles']['search_year'];
-	  } else {
-	    $search_year = 'date';
-	  }
-
-	// Put form info into array expected by search logger / handlers
-	$search_info = array (
-	'search_target' => 'articles',
-	'search_terms' => $form_state['values']['articles']['text_query'],
-	'search_code' => $form_state['values']['articles']['search_index'],
-	'search_year' => $search_year,
-	'search_categories' => $search_categories_codes,
-	'search_date' => $search_date,
-	'browser_ip' => $browser_ip,
-	);
-	ucla_search_route_search($search_info);
 	break;
 
-//drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
-
-          break;
+        case 'articles':
+	  $search_categories_codes = '';
+	  foreach ($form_state['values']['articles']['search_categories'] as $search_categories_code) {
+	    if( $search_categories_code > 0 ){
+	      $search_categories_codes .= ' '.$search_categories_code;
+	      }
+	    }
+	    if( $form_state['values']['articles']['search_year'] > 0 ){
+	      $search_year = $form_state['values']['articles']['search_year'];
+	    } else {
+	      $search_year = 'date';
+	    }
+	  // Put form info into array expected by search logger / handlers
+	  $search_info = array (
+	  'search_target' => 'articles',
+	  'search_terms' => $form_state['values']['articles']['text_query'],
+	  'search_code' => $form_state['values']['articles']['search_index'],
+	  'search_year' => $search_year,
+	  'search_categories' => $search_categories_codes,
+	  'search_date' => $search_date,
+	  'browser_ip' => $browser_ip,
+	  );
+	  ucla_search_route_search($search_info);
+	break;
 
         case 'databases':
-drupal_set_message(t('debug message tab databases: '.$form_state['values']['databases']['text_query']));
-	$search_categories_codes = '';
-	foreach ($form_state['values']['articles']['search_categories'] as $search_categories_code) {
-	  if( $search_categories_code > 0 ){
-	    $search_categories_codes .= ' '.$search_categories_code;
+	  $search_categories_codes = '';
+	  foreach ($form_state['values']['articles']['search_categories'] as $search_categories_code) {
+	    if( $search_categories_code > 0 ){
+	      $search_categories_codes .= ' '.$search_categories_code;
+	      }
 	    }
-	  }
-
 	  if( $form_state['values']['articles']['search_year'] > 0 ){
 	    $search_year = $form_state['values']['articles']['search_year'];
 	  } else {
 	    $search_year = 'date';
 	  }
-
-	    switch ( $maps[$form_state['values']['databases']['method']] ) {
-	      case 'within':
-		// Put form info into array expected by search logger / handlers
-		$search_info = array (
-		'search_target' => 'database',
-		'search_type' => 'contains',
-		'search_terms' => $form_state['values']['databases']['text_query'],
-		'search_date' => $search_date,
-		'browser_ip' => $browser_ip,
-		);
-		break;
-	      case 'starts':
-		// Put form info into array expected by search logger / handlers
-		$search_info = array (
-		'search_target' => 'database',
-		'search_type' => 'starts',
-		'search_terms' => $form_state['values']['databases']['text_query'],
-		'search_date' => $search_date,
-		'browser_ip' => $browser_ip,
-		);
-		break;
-	      }
-
-
-	ucla_search_route_search($search_info);
-	break;
-
-//drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
-
-          break;
-
-
-
-
+	  switch ( $maps[$form_state['values']['databases']['method']] ) {
+	    case 'within':
+	      // Put form info into array expected by search logger / handlers
+	      $search_info = array (
+	      'search_target' => 'database',
+	      'search_type' => 'contains',
+	      'search_terms' => $form_state['values']['databases']['text_query'],
+	      'search_date' => $search_date,
+	      'browser_ip' => $browser_ip,
+	      );
+	    break;
+	    case 'starts':
+	      // Put form info into array expected by search logger / handlers
+	      $search_info = array (
+	      'search_target' => 'database',
+	      'search_type' => 'starts',
+	      'search_terms' => $form_state['values']['databases']['text_query'],
+	      'search_date' => $search_date,
+	      'browser_ip' => $browser_ip,
+	      );
+	      break;
+	  }
+        break;
 
         case 'journals_dev':
-drupal_set_message(t('debug message tab journals: '.$tab));
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['journals']['catalog']];
 	    switch ( $maps[$form_state['values']['journals']['catalog']] ) {
 	      case 'J-ALL':
-
-  foreach ( $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'] as $tab => $type_choice ) {
-    // The submit button name is used to decide where we are.
-    if (empty( $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index']['$tab'] )) {
-      // Not this tab.
-      continue;
-    }
-}
-
-
-
-
+		foreach ( $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'] as $tab => $type_choice ) {
+		  // The submit button name is used to decide where we are.
+		  if (empty( $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index']['$tab'] )) {
+		    // Not this tab.
+		    continue;
+		  }
+		}
 		// Put form info into array expected by search logger / handlers
 		$search_info = array (
 		'search_target' => 'melvyl',
@@ -774,7 +743,7 @@ drupal_set_message(t('debug message tab journals: '.$tab));
 		'search_date' => $search_date,
 		'browser_ip' => $browser_ip,
 		);
-		break;
+	      break;
 	      case 'J-E':
 		// Put form info into array expected by search logger / handlers
 		$search_info = array (
@@ -784,91 +753,75 @@ drupal_set_message(t('debug message tab journals: '.$tab));
 		'search_date' => $search_date,
 		'browser_ip' => $browser_ip,
 		);
-		break;
-      }
-		// dhc: move down more???
-		// Log the search info before doing the search
-//		ucla_search_log_search($search_info); 
-		// Send search info to router, which will do the actual search
-		ucla_search_route_search($search_info);
-          break;
-
-
-
-
-
+	      break;
+	    }
+        break;
 
         case 'journals':
           $form_state['values']['ucla_form_id'] = $maps[$form_state['values']['journals']['catalog']];
 	    switch ( $maps[$form_state['values']['journals']['catalog']] ) {
 	      case 'J-ALL':
 		$search_info = array (
-		  'search_target' => 'catalog',
-		  'search_terms' => $form_state['values']['journals']['text_query'],
-		  'search_code' => $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'],
-		  'search_date' => $search_date,
-		  'browser_ip' => $browser_ip,
-		  );
-	      break;
-	      case 'J-E':
-		$search_info = array (
-		  'search_target' => 'sfx',
-		  'search_terms' => $form_state['values']['journals']['text_query'],
-		  'search_type' => $form_state['values']['journals']['sfx_search_index_container']['sfx_search_index'],
-		  'search_date' => $search_date,
-		  'browser_ip' => $browser_ip,
-		  );
-	      break;
-	    }
-//drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
-
-	ucla_search_route_search($search_info);
-
-          break;
-
-
-        case 'guides':
-drupal_set_message(t('debug message tab guides: '.$form_state['values']['guides']['text_query']));
-
-		// Put form info into array expected by search logger / handlers
-		$search_info = array (
-		'search_target' => 'guides',
-		'search_terms' => $form_state['values']['guides']['text_query'],
+		'search_target' => 'catalog',
+		'search_terms' => $form_state['values']['journals']['text_query'],
+		'search_code' => $form_state['values']['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'],
 		'search_date' => $search_date,
 		'browser_ip' => $browser_ip,
 		);
-	ucla_search_route_search($search_info);
-	break;
-//drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
-          break;
+	      break;
+	      case 'J-E':
+		$search_info = array (
+		'search_target' => 'sfx',
+		'search_terms' => $form_state['values']['journals']['text_query'],
+		'search_type' => $form_state['values']['journals']['sfx_search_index_container']['sfx_search_index'],
+		'search_date' => $search_date,
+		'browser_ip' => $browser_ip,
+		);
+	      break;
+	    }
+        break;
 
+        case 'guides':
+	  // Put form info into array expected by search logger / handlers
+	  $search_info = array (
+	  'search_target' => 'guides',
+	  'search_terms' => $form_state['values']['guides']['text_query'],
+	  'search_date' => $search_date,
+	  'browser_ip' => $browser_ip,
+	  );
+	break;
 
         case 'reserves':
-	// Put form info into array expected by search logger / handlers
-	$search_info = array (
-	'search_target' => 'reserves',
-	'search_inst' => $form_state['values']['reserves']['ucla_reserves_inst_index'],
-	'search_dept' => $form_state['values']['reserves']['ucla_reserves_dept_index'],
-	'search_crse' => $form_state['values']['reserves']['ucla_reserves_crse_index'],
-	'search_pid' => $form_state['values']['reserves']['search_pid'],
-	'search_seq' => $form_state['values']['reserves']['search_seq'],
-	'search_date' => $search_date,
-	'browser_ip' => $browser_ip,
-	);
-	ucla_search_route_search($search_info);
-	break;
-//drupal_set_message(t('debug message JOURNALS '.$form_state['values']['journals']['text_query']));
-          break;
-
+	  // Put form info into array expected by search logger / handlers
+	  $search_info = array (
+	  'search_target' => 'reserves',
+	  'search_inst' => $form_state['values']['reserves']['ucla_reserves_inst_index'],
+	  'search_dept' => $form_state['values']['reserves']['ucla_reserves_dept_index'],
+	  'search_crse' => $form_state['values']['reserves']['ucla_reserves_crse_index'],
+	  'search_pid' => $form_state['values']['reserves']['search_pid'],
+	  'search_seq' => $form_state['values']['reserves']['search_seq'],
+	  'search_date' => $search_date,
+	  'browser_ip' => $browser_ip,
+	  );
+        break;
 
         default:
           // Not recognized.
-drupal_set_message(t('debug message tab none: '.$tab));
-          break;
+	  $search_info = array (
+	  'search_target' => 'error',
+	  'search_terms' => 'BAD SEARCH - COULD NOT ID TAB',
+	  'search_date' => $search_date,
+	  'browser_ip' => $browser_ip,
+	  );
+        break;
       }
+
+    // Log the search info before doing the search
+//    ucla_search_log_search($search_info); 
+    // Send search info to router, which will do the actual search
+    ucla_search_route_search($search_info);
     }
     else {
-drupal_set_message(t('debug message tab no maps: '.$tab));
       $form_state['values']['ucla_form_id'] = $maps;
     }
   }
