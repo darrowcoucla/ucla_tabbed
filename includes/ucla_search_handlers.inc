@@ -45,11 +45,6 @@ function ucla_search_route_search($search_info) {
   }
 }
 
-
-
-
-                 http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?INST=Any&DEPT=A%26O+SCI%3A++Atmospheric+and+Oceanic+Sciences+%2821%29&CRSE=Any&PID=fR6jFI80JtmI5CE6XoKNs1GJlefRYOL&SEQ=20131127230710&CNT=50&HIST=1
-
 function ucla_search_catalog($search_info) {
   $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?DB=local&Search_Arg=';
   $extra_params = '&Search_Code=';
@@ -66,29 +61,27 @@ function ucla_search_catalog($search_info) {
   drupal_goto($path = $target_url);
 }
 
+/*
+<OPTION VALUE="A&O SCI:  Atmospheric and Oceanic Sciences (21)">A&O SCI:Atmospheric and Oceanic Sciences</OPTION>
+A%26O+SCI%3A++Atmospheric+and+Oceanic+Sciences+(21)
+A%26O+SCI%3A++Atmospheric+and+Oceanic+Sciences+%2821%29
 
-
-
+http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?INST=
+Any
+&DEPT=A%26O+SCI%3A++Atmospheric+and+Oceanic+Sciences+%2821%29
+&CRSE=Any
+&PID=fR6jFI80JtmI5CE6XoKNs1GJlefRYOL
+&SEQ=20131127230710
+&CNT=50&HIST=1
+*/
 
 function ucla_search_reserves($search_info) {
-  $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?DB=local&Search_Arg=';
-  $extra_params = '&Search_Code=';
-  if ($search_info['search_code']) {
-    $extra_params .= $search_info['search_code'];
-  } else {
-    $extra_params .= 'GKEY^';
-  }
-  $extra_params .= '&SL=None&CNT=50&HIST=1';
-  // Replace space with plus, but do NOT url encode the terms
-  $target_url .= str_replace(' ', '+', $search_info['search_terms']);
-  // Extra params must be after the search terms in the URL
-  $target_url .= $extra_params;
+  $search_inst = urlencode( $search_info['search_inst'] );
+  $search_dept = urlencode( $search_info['search_dept'] );
+  $search_crse = urlencode( $search_info['search_crse'] );
+  $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?INST='.$search_inst.'&DEPT='.$search_dept.'&CRSE='.$search_crse.'&PID='.$search_info['search_pid'].'&SEQ='.$search_info['search_seq'].'&CNT=50&HIST=1';
   drupal_goto($path = $target_url);
 }
-
-
-
-
 
 /****
 http://mb5hp5vz2c.cs.serialssolutions.com/results
