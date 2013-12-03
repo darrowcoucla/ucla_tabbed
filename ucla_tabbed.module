@@ -1,172 +1,10 @@
 <?php
 /**
  * @file
- * Defines custom search form allowing user to choose from multiple search targets.
+ * Defines tabbed custom search form allowing user to choose from multiple search targets.
  */
 
-/**
- * Define custom search form
- */
-function ucla_tabbed_custom_form($form, &$form_state) {
-  $form = array();
-  // #form_id apparently set by default from function name but be explicit
-  $form['#form_id'] = 'ucla_tabbed_custom_form';
-
-  // Select (drop-down) list for user to choose where to search
-  $form['search_target'] = array (
-    '#type' => 'select',
-    '#title' => 'Choose one:',
-    '#title_display' => 'invisible',
-    '#options' => array (
-      'site' => 'Site search',
-      'melvyl' => 'Melvyl',
-      'catalog' => 'Library Catalog',
-      'guides' => 'Research Guides'
-    )
-  );
-
-  $form['search_terms'] = array(
-    '#type' => 'textfield',
-    '#required' => TRUE,
-    '#size' => 26,
-    '#maxlength' => 80,
-    '#default_value' => ''
-  );
-
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => 'OK',
-    '#id' => 'ucla-search-custom-form-submit',
-  );
-
-  return $form;
-}
-
-/**
- * Handle the form when submitted
- * Implements FORM_ID_submit(), mentioned in passing at
- * http://api.drupal.org/api/drupal/developer!topics!forms_api_reference.html/7#submit_property
- */
-function ucla_tabbed_custom_form_submit($form, &$form_state) {
-  //dsm($form);
-  //dsm($form_state);
-
-  $search_terms = $form['search_terms']['#value'];
-  $search_target = $form['search_target']['#value'];
-  // If behind varnish, REMOTE_ADDR = IP of the varnish server
-  // and HTTP_X_FORWARDED_FOR = IP of remote user
-  $browser_ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']);
-  $search_date = $_SERVER['REQUEST_TIME'];
-  // $search_date is timestamp; for pretty output, use something like date('Y-m-d H:i:s T', $search_date)
-
-  // Log the search info before doing the search
-  $search_info = array(
-    'search_date' => $search_date,
-    'search_target' => $search_target,
-    'search_terms' => $search_terms,
-    'browser_ip' => $browser_ip
-  );
-  db_insert('ucla_tabbed_log')->fields($search_info)->execute();
-
-  // Format URL for target-specific search and redirect to that URL
-  switch ($search_target) {
-    case "site":
-      // Call the native Drupal site search form
-      $form_state['redirect'] = 'search/node/' . trim($search_terms);
-      break;
-    case "melvyl":
-      $target_url = 'http://ucla.worldcat.org/search?qt=wc_org_ucla&q=';
-      // Replacing space with plus in search is not needed or desired for WorldCat
-      $target_url .= drupal_encode_path($search_terms);
-      // Docs say drupal_goto is for "local" URLs but works fine with absolute off-site URLs too
-      drupal_goto($path = $target_url);
-      break;
-    case "catalog":
-      $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?DB=local&Search_Arg=';
-      $extra_params = '&Search_Code=GKEY^&SL=None&CNT=50&HIST=1';
-      // Need to replace space with plus for library catalog, but do NOT url encode the terms
-      $target_url .= str_replace(' ', '+', $search_terms);
-      // Extra params must be after the search terms in the URL
-      $target_url .= $extra_params;
-      drupal_goto($path = $target_url);
-      break;
-    case "guides":
-      $target_url = 'http://guides.library.ucla.edu/search.php?iid=261&c=0&search=';
-      // Need to replace space with plus for subject guides, but do NOT url encode the terms
-      $target_url .= str_replace(' ', '+', $search_terms);
-      drupal_goto($path = $target_url);
-      break;
-    default:
-      drupal_set_message("WHAT???");
-  }
-}
-
-/**
- * Implements hook_block_info() to define a new block for the custom form
- */
-function ucla_tabbed_block_info() {
-  $blocks['ucla_tabbed'] = array(
-    'info' => t('UCLA Custom Search Block'),
-    'cache' => DRUPAL_NO_CACHE
-  );
-  $blocks['ucla_tab_search'] = array(
-    'info' => t('UCLA Tabbed Search Block'),
-  );
-  return $blocks;
-}
-
-/**
- * Implements hook_block_view() to add the custom form to the new block
- */
-function ucla_tabbed_block_view( $delta = '') {
-  $block = array();
-  switch ($delta) {
-    case 'ucla_tabbed':
-      $block['title'] = 'UCLA Search';
-      $block['content'] = drupal_render(drupal_get_form('ucla_tabbed_custom_form'));
-      break;
-    case 'ucla_tab_search':
-      $block['title'] = 'UCLA Search';
-      $block['content'] = drupal_get_form('ucla_tab_search_form');
-      break;
-  }
-  return $block;
-}
-
-/**
- * Implements hook_menu() 
- */
-// not needed if using this in a block instead
-/**************************
-function ucla_tabbed_menu() {
-  $items['customsearch/ucla'] = array(
-    'title' => 'UCLA custom search',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('ucla_tabbed_custom_form'),
-    'access callback' => TRUE
-  );
-
-  return $items;
-}
-**************************/
-
-/**
- * Implements hook_views_api()
- * Actual views integration code is in ucla_tabbed.views.inc
- */
-function ucla_tabbed_views_api() {
-  return array(
-    'api' => 3
-  );
-}
-
-
-
-
-
-
-
-/**
+/** ***********************************************************************************************************************
  * Form constructor for the tabbed search.
  *
  * Notice a container element is used when we need to use #states form key.
@@ -177,10 +15,7 @@ function ucla_tabbed_views_api() {
  * @todo Maybe split on several forms, one per tab.
  */
 function ucla_tab_search_form($form, &$form_state) {
-
-krumo("bnbn0");
-
-
+//krumo("Hello"); // greeting
 ////////////////////////////////////////////////////////////////////////////////
 // prep for Reserves search
 ////////////////////////////////////////////////////////////////////////////////
@@ -471,9 +306,9 @@ curl_close ($ch);
   $form['journals']['sfx_search_index_container']['sfx_search_index'] = array(
     '#type' => 'radios',
     '#options' => array(
-        'within' => t('Contains0'),
-        'starts' => t('Starts with0'),
-        'exact' => t('Exact0'),
+        'within' => t('Contains'),
+        'starts' => t('Starts with'),
+        'exact' => t('Exact'),
     ),
     '#default_value' => 'within',
   );
@@ -486,8 +321,8 @@ curl_close ($ch);
   $form['journals']['ucla_tabbed_index_container']['ucla_tabbed_index'] = array(
     '#type' => 'radios',
     '#options' => array(
-        'JKEY' => t('Contains1'),
-        'JAL2' => t('Starts with1'),
+        'JKEY' => t('Contains'),
+        'JAL2' => t('Starts with'),
     ),
     '#default_value' => 'JKEY',
   );
@@ -545,11 +380,26 @@ curl_close ($ch);
     '#options' => $select_options_array_crse,
   );
 
-
-  ////////////////////////////////////////////////////////////////////////////////
   $form['reserves']['reserves_search'] = $search_button;
   $form['reserves']['reserves_search']['#name'] = 'op_reserves';
 
+
+  ////////////////////////////////////////////////////////////////////////////////
+  // oac's tab.
+  // oac's tab.
+  // oac's tab.
+  $form['oac'] = array(
+    '#title' => t('OAC'),
+  ) + $fieldset_default;
+  $form['oac']['text_query'] = $query_textfield;
+  $form['oac']['text_query']['#attributes'] = array(
+    'placeholder' => t('search the OAC for a manuscript or archive'),
+  );
+  $form['oac']['oac_search'] = $search_button;
+  $form['oac']['oac_search']['#name'] = 'op_oac';
+
+
+  ////////////////////////////////////////////////////////////////////////////////
 
 /*
   // Citation tab.
@@ -571,7 +421,8 @@ curl_close ($ch);
 
 }
 
-/**
+
+/** ***********************************************************************************************************************
  * Form submission handler for ucla_tab_search_form().
  *
  * This is mainly about mapping values preparing them to the othe submit
@@ -626,6 +477,7 @@ drupal_set_message(t('debug message'));
     'databases' => array('within' => 'within', 'starts' => 'starts'),
     'guides' => array('within' => 'within', 'starts' => 'starts'),
     'reserves' => array('within' => 'within', 'starts' => 'starts'),
+    'oac' => array('within' => 'within', 'starts' => 'starts'),
   );
 
   foreach ($tab_form_id_map as $tab => $maps) {
@@ -805,6 +657,16 @@ drupal_set_message(t('debug message tab0 '.$tab));
 	  );
         break;
 
+        case 'oac':
+	  // Put form info into array expected by search logger / handlers
+	  $search_info = array (
+	  'search_target' => 'oac',
+	  'search_terms' => $form_state['values']['oac']['text_query'],
+	  'search_date' => $search_date,
+	  'browser_ip' => $browser_ip,
+	  );
+	break;
+
         default:
           // Not recognized.
 	  $search_info = array (
@@ -817,7 +679,7 @@ drupal_set_message(t('debug message tab0 '.$tab));
       }
 
     // Log the search info before doing the search
-//    ucla_search_log_search($search_info); 
+//    ucla_search_log_search($search_info);
     // Send search info to router, which will do the actual search
     ucla_search_route_search($search_info);
     }
@@ -829,3 +691,65 @@ drupal_set_message(t('debug message tab0 '.$tab));
   // @fixme Define: search_terms search_index search_year search_categories.
 }
 
+
+/** ***********************************************************************************************************************
+ * Implements hook_block_info() to define a new block for the custom form
+ */
+function ucla_tabbed_block_info() {
+  $blocks['ucla_tabbed'] = array(
+    'info' => t('UCLA Custom Search Block'),
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['ucla_tab_search'] = array(
+    'info' => t('UCLA Tabbed Search Block'),
+  );
+  return $blocks;
+}
+
+
+/** ***********************************************************************************************************************
+ * Implements hook_block_view() to add the custom form to the new block
+ */
+function ucla_tabbed_block_view( $delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'ucla_tabbed':
+      $block['title'] = 'UCLA Search';
+      $block['content'] = drupal_render(drupal_get_form('ucla_tabbed_custom_form'));
+      break;
+    case 'ucla_tab_search':
+      $block['title'] = 'UCLA Search';
+      $block['content'] = drupal_get_form('ucla_tab_search_form');
+      break;
+  }
+  return $block;
+}
+
+
+/** ***********************************************************************************************************************
+ * Implements hook_menu() 
+ */
+// not needed if using this in a block instead
+/**************************
+function ucla_tabbed_menu() {
+  $items['customsearch/ucla'] = array(
+    'title' => 'UCLA custom search',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ucla_tabbed_custom_form'),
+    'access callback' => TRUE
+  );
+
+  return $items;
+}
+**************************/
+
+
+/** ***********************************************************************************************************************
+ * Implements hook_views_api()
+ * Actual views integration code is in ucla_tabbed.views.inc
+ */
+function ucla_tabbed_views_api() {
+  return array(
+    'api' => 3
+  );
+}

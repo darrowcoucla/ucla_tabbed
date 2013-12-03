@@ -83,16 +83,6 @@ function ucla_search_reserves($search_info) {
   drupal_goto($path = $target_url);
 }
 
-/****
-http://mb5hp5vz2c.cs.serialssolutions.com/results
-?SS_LibHash=MB5HP5VZ2C&locale=en-us&action=start&dbIDList=&term=
-===>were
-&field0=keyword&boolop1=and&term1=&field1=keyword&boolop2=and&term2=&field2=keyword&boolop4=And&term4=&field4=
-===>date
-&catID=
-===>103266
-****/
-
 function serial_solutions_360($search_info) {
   $target_url = 'http://mb5hp5vz2c.cs.serialssolutions.com/results';
   $extra_params = '?SS_LibHash=MB5HP5VZ2C&locale=en-us&action=start&dbIDList=&term=';
@@ -105,35 +95,6 @@ function serial_solutions_360($search_info) {
   $target_url .= $extra_params;
   drupal_goto($path = $target_url);
 }
-
-
-/*
-Location: http://mb5hp5vz2c.cs.serialssolutions.com/results?SS_LibHash=MB5HP5VZ2C&locale=en-us&action=start&dbIDList=&term=were&field0=titlekeyword&boolop1=and&term1=&field1=keyword&boolop2=and&term2=&field2=keyword&boolop4=And&term4=&field4=date&catID=103266
-*/
-
-/*
-SS_LibHash=MB5HP5VZ2C
-&locale=en-us
-&action=start
-&dbIDList=
-&term=were
-&field0=abstract
-&boolop1=and
-&term1=
-&field1=keyword
-&boolop2=and
-&term2=
-&field2=keyword
-&boolop4=And
-&term4=
-&field4=date
-&catID=103266
-*/
-
-
-/*
-http://unitproj.library.ucla.edu/search/databases-title-result.cfm?keyword=university&method=contains
-*/
 
 function ucla_search_database($search_info) {
 /*****
