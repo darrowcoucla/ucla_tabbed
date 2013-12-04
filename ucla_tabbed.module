@@ -431,10 +431,6 @@ curl_close ($ch);
  * Drupal core forms form_id also provided automatically.
  */
 function ucla_tab_search_form_submit($form, &$form_state) {
-
-drupal_set_message(t('debug message tab0000 '));
-
-
 /*
 //test
   module_load_include('inc', 'ucla_search', 'includes/ucla_search_logger');
@@ -486,9 +482,6 @@ drupal_set_message(t('debug message'));
       // Not this tab.
       continue;
     }
-
-drupal_set_message(t('debug message tab0 '.$tab));
-
     if (is_array($maps)) {
       switch ($tab) {
         case 'books':
