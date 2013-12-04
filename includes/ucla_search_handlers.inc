@@ -93,9 +93,11 @@ function ucla_search_reserves($search_info) {
   $target_url .= '&CNT=50&HIST=1';
 //  drupal_goto($path = $target_url);
 
+print_r($target_url);
+break;
 
 
-
+/*
 drupal_goto($base_url, array(
     'query' => array(
         'INST' => str_replace(' ', '+', $search_info['search_inst']),
@@ -107,7 +109,7 @@ drupal_goto($base_url, array(
         'HIST' => '1',
     ),
 ));
-
+*/
 
 
 }
