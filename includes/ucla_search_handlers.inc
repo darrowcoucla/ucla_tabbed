@@ -91,10 +91,10 @@ function ucla_search_reserves($search_info) {
   $target_url .= '&SEQ=';
   $target_url .= $search_info['search_seq'];
   $target_url .= '&CNT=50&HIST=1';
-//  drupal_goto($path = $target_url);
+  drupal_goto($path = $target_url);
 
-print_r($target_url);
-break;
+//print_r($target_url);
+//break;
 
 
 /*
