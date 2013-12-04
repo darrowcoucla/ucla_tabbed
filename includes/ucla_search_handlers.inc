@@ -98,9 +98,9 @@ function ucla_search_reserves($search_info) {
 
 drupal_goto($base_url, array(
     'query' => array(
-        'INST' => $search_info['search_inst'],
-        'DEPT' => $search_info['search_dept'],
-        'CRSE' => $search_info['search_crse'],
+        'INST' => str_replace(' ', '+', $search_info['search_inst']),
+        'DEPT' => str_replace(' ', '+', $search_info['search_dept']),
+        'CRSE' => str_replace(' ', '+', $search_info['search_crse']),
         'PID' => $search_info['search_pid'],
         'SEQ' => $search_info['search_seq'],
         'CNT' => '50',
