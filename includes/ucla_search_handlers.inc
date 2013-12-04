@@ -76,9 +76,9 @@ Any
 */
 
 function ucla_search_reserves($search_info) {
-  $search_inst = rawurlencode( $search_info['search_inst'] );
-  $search_dept = rawurlencode( $search_info['search_dept'] );
-  $search_crse = rawurlencode( $search_info['search_crse'] );
+  $search_inst = urlencode( $search_info['search_inst'] );
+  $search_dept = urlencode( $search_info['search_dept'] );
+  $search_crse = urlencode( $search_info['search_crse'] );
   $base_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi';
   $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?INST=';
   $target_url .= $search_inst;
