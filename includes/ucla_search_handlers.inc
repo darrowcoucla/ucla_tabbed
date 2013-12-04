@@ -79,6 +79,7 @@ function ucla_search_reserves($search_info) {
   $search_inst = rawurlencode( $search_info['search_inst'] );
   $search_dept = rawurlencode( $search_info['search_dept'] );
   $search_crse = rawurlencode( $search_info['search_crse'] );
+  $base_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi';
   $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?INST=';
   $target_url .= $search_inst;
   $target_url .= '&DEPT=';
@@ -90,7 +91,25 @@ function ucla_search_reserves($search_info) {
   $target_url .= '&SEQ=';
   $target_url .= $search_info['search_seq'];
   $target_url .= '&CNT=50&HIST=1';
-  drupal_goto($path = $target_url);
+//  drupal_goto($path = $target_url);
+
+
+
+
+drupal_goto($base_url, array(
+    'query' => array(
+        'INST' => $search_info['search_inst'],
+        'DEPT' => $search_info['search_dept'],
+        'CRSE' => $search_info['search_crse'],
+        'PID' => $search_info['search_pid'],
+        'SEQ' => $search_info['search_seq'],
+        'CNT' => '50',
+        'HIST' => '1',
+    ),
+));
+
+
+
 }
 
 function serial_solutions_360($search_info) {
