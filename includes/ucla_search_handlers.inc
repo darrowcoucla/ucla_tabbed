@@ -79,7 +79,17 @@ function ucla_search_reserves($search_info) {
   $search_inst = urlencode( $search_info['search_inst'] );
   $search_dept = urlencode( $search_info['search_dept'] );
   $search_crse = urlencode( $search_info['search_crse'] );
-  $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?INST='.$search_inst.'&DEPT='.$search_dept.'&CRSE='.$search_crse.'&PID='.$search_info['search_pid'].'&SEQ='.$search_info['search_seq'].'&CNT=50&HIST=1';
+  $target_url = 'http://catalog.library.ucla.edu/cgi-bin/Pwebrecon.cgi?INST=';
+  $target_url .= $search_inst;
+  $target_url .= '&DEPT=';
+  $target_url .= $search_dept;
+  $target_url .= '&CRSE=';
+  $target_url .= $search_crse;
+  $target_url .= '&PID=';
+  $target_url .= $search_info['search_pid'];
+  $target_url .= '&SEQ=';
+  $target_url .= $search_info['search_seq'];
+  $target_url .= '&CNT=50&HIST=1';
   drupal_goto($path = $target_url);
 }
 
